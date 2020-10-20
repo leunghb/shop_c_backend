@@ -15,4 +15,8 @@ public class UserService {
     public List<User> getAllUser() {
         return userMapper.getAllUser();
     }
+
+    public User getUserByAccount(String account) {
+        return userMapper.getUserByAccount(account);
+    }
 }

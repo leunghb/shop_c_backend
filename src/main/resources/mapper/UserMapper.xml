@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.UserMapper">
-    <select id="getAllUser" resultType="shop.demo.entity.User">
+    <select id="getAllUser" resultType="User">
         select account,createdAt from user;
+    </select>
+
+    <select id="getUserByAccount" resultType="User">
+        select account,createdAt from user where account = #{account};
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into user(account,password) values(#{account},#{password})
+    </insert>
+
+    <insert id="addVerifyCode" parameterType="VerifyCode">
+        insert into verifyCode(account,code,effectiveTime) values(#{account},#{code},#{effectiveTime})
+    </insert>
+
+    <update id="putVerifyCode" parameterType="VerifyCode">
+        update verifyCode set code=#{code}, effectiveTime=#{effectiveTime} where account=#{account}
+    </update>
+
+    <select id="getVerifyCodeByAccount" parameterType="VerifyCode">
+        select code,createdAt,updatedAt from verifyCode where account=#{account}
     </select>
 </mapper>
