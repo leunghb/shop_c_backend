@@ -19,4 +19,8 @@ public class UserService {
     public User getUserByAccount(String account) {
         return userMapper.getUserByAccount(account);
     }
+
+    public int addUser(String account, String password) {
+        return userMapper.addUser(account, password);
+    }
 }

@@ -12,16 +12,4 @@
     <insert id="addUser" parameterType="User">
         insert into user(account,password) values(#{account},#{password})
     </insert>
-
-    <insert id="addVerifyCode" parameterType="VerifyCode">
-        insert into verifyCode(account,code,effectiveTime) values(#{account},#{code},#{effectiveTime})
-    </insert>
-
-    <update id="putVerifyCode" parameterType="VerifyCode">
-        update verifyCode set code=#{code}, effectiveTime=#{effectiveTime} where account=#{account}
-    </update>
-
-    <select id="getVerifyCodeByAccount" parameterType="VerifyCode">
-        select code,createdAt,updatedAt from verifyCode where account=#{account}
-    </select>
 </mapper>
