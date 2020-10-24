@@ -2,7 +2,7 @@ package shop.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -10,8 +10,8 @@ public class User {
     private Long id;
     private String account;
     private String password;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Long getId() {
         return id;
@@ -37,32 +37,31 @@ public class User {
         this.password = password;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         User user = (User) o;
-        return id == user.id &&
-                Objects.equals(account, user.account) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(createdAt, user.createdAt) &&
-                Objects.equals(updatedAt, user.updatedAt);
+        return id == user.id && Objects.equals(account, user.account) && Objects.equals(password, user.password)
+                && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
@@ -72,12 +71,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+        return "User{" + "id=" + id + ", account='" + account + '\'' + ", password='" + password + '\'' + ", createdAt="
+                + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

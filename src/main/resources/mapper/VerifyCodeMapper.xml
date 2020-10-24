@@ -5,7 +5,7 @@
         insert into verifyCode(account,code,effectiveTime) values(#{account},#{code},#{effectiveTime}) on duplicate key update code=#{code}, effectiveTime=#{effectiveTime};
     </insert>
 
-    <select id="getVerifyCodeByAccount" parameterType="VerifyCode">
-        select code,createdAt,updatedAt from verifyCode where account=#{account}
+    <select id="getVerifyCodeByAccount" parameterType="VerifyCode" resultType="VerifyCode">
+        select effectiveTime,updatedAt,code from verifyCode where account=#{account};
     </select>
 </mapper>

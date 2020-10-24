@@ -2,7 +2,7 @@ package shop.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -11,8 +11,8 @@ public class VerifyCode {
     private String account;
     private String code;
     private int effectiveTime;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Long getId() {
         return id;
@@ -46,33 +46,32 @@ public class VerifyCode {
         this.effectiveTime = effectiveTime;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         VerifyCode that = (VerifyCode) o;
-        return effectiveTime == that.effectiveTime &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(account, that.account) &&
-                Objects.equals(code, that.code) &&
-                Objects.equals(createdAt, that.createdAt) &&
-                Objects.equals(updatedAt, that.updatedAt);
+        return effectiveTime == that.effectiveTime && Objects.equals(id, that.id)
+                && Objects.equals(account, that.account) && Objects.equals(code, that.code)
+                && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
@@ -82,13 +81,7 @@ public class VerifyCode {
 
     @Override
     public String toString() {
-        return "VerifyCode{" +
-                "id=" + id +
-                ", account='" + account + '\'' +
-                ", code='" + code + '\'' +
-                ", effectiveTime=" + effectiveTime +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+        return "VerifyCode{" + "id=" + id + ", account='" + account + '\'' + ", code='" + code + '\''
+                + ", effectiveTime=" + effectiveTime + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
     }
 }

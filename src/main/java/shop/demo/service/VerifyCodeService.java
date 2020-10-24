@@ -1,6 +1,5 @@
 package shop.demo.service;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.demo.entity.VerifyCode;
@@ -13,5 +12,9 @@ public class VerifyCodeService {
 
     public int addVerifyCode(String account, String code, int effectiveTime) {
         return verifyCodeMapper.addVerifyCode(account, code, effectiveTime);
+    }
+
+    public VerifyCode getVerifyCodeByAccount(String account) {
+        return verifyCodeMapper.getVerifyCodeByAccount(account);
     }
 }

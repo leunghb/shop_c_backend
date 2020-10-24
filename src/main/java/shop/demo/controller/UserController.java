@@ -1,7 +1,7 @@
 package shop.demo.controller;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,10 +13,10 @@ import shop.demo.entity.VerifyCode;
 import shop.demo.service.MailService;
 import shop.demo.service.UserService;
 import shop.demo.service.VerifyCodeService;
+import shop.demo.utils.Md5;
 
-import javax.websocket.server.PathParam;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @RestController
@@ -42,34 +42,62 @@ public class UserController {
     /**
      * 获取单个用户
      *
-     * @param account string 账号
+     * @param account * string 账号
      */
     @PostMapping("user/getUserByAccount")
-    public Result<User> getUserByAccount(@RequestParam Map<String, Object> map) {
-        String account = map.get("account").toString();
+    public Result<User> getUserByAccount(@RequestParam String account) {
         User user = userService.getUserByAccount(account);
         return Result.success(user);
     }
 
     /**
      * 注册
-     * @param account string 账号
-     * @param password string 密码
-     * @param code string 验证码
-     * @param effectiveTime int 有效时间（分钟）
+     * 
+     * @param account  * string 账号
+     * @param password * string 密码
+     * @param code     * string 验证码
      */
-//    @PostMapping("/register")
+    @PostMapping("user/register")
+    public Result<Object> register(@RequestParam String account, @RequestParam String password,
+            @RequestParam String code) {
+        User user = userService.getUserByAccount(account);
+        if (user != null)
+            return Result.error(CodeMsg.FAIL, "账号已存在");
+
+        VerifyCode verifyCode = verifyCodeService.getVerifyCodeByAccount(account);
+        if (verifyCode == null)
+            return Result.error(CodeMsg.FAIL, "账号与验证码不一致");
+
+        int effectiveTime = verifyCode.getEffectiveTime();
+        Date updatedAt = verifyCode.getUpdatedAt();
+        Date nowTime = new Date();
+        int time = effectiveTime * 60 * 1000;
+        Date lastTime = new Date(updatedAt.getTime() + time);
+
+        if (nowTime.compareTo(lastTime) > 0)
+            return Result.error(CodeMsg.FAIL, "验证码已失效");
+
+        String correctVerifyCode = verifyCode.getCode();
+        if (!code.equals(correctVerifyCode))
+            return Result.error(CodeMsg.FAIL, "验证码错误");
+
+        password = Md5.md5(password);
+        int row = userService.addUser(account, password);
+        if (!(row > 0))
+            return Result.error(CodeMsg.FAIL, "注册失败");
+
+        return Result.success(CodeMsg.SUCCESS, "注册成功");
+    }
 
     /**
      * 发送验证码
      *
-     * @param account       string 账号
+     * @param account       * string 账号
      * @param effectiveTime int 有效时间（分钟）
      */
     @PostMapping("user/sendVerifyCode")
-    public Result<Object> sendVerifyCode(@RequestParam Map<String, Object> map) {
-        String account = map.get("account").toString();
-        int effectiveTime = Integer.parseInt((String) map.get("effectiveTime"));
+    public Result<Object> sendVerifyCode(@RequestParam String account,
+            @RequestParam(required = false, defaultValue = "6") int effectiveTime) {
         if (account.equals("")) {
             return Result.error(CodeMsg.PARAMETER_ISNULL, "请输入账号");
         }
