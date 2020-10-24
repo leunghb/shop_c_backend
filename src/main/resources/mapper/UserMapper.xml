@@ -12,4 +12,8 @@
     <insert id="addUser" parameterType="User">
         insert into user(account,password) values(#{account},#{password})
     </insert>
+
+    <select id="getUserByAccountAndPassword" resultType="User" parameterType="User">
+        select account from user where account = #{account} and password = #{password}
+    </select>
 </mapper>

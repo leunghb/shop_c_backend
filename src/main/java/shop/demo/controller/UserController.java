@@ -1,5 +1,6 @@
 package shop.demo.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,6 @@ public class UserController {
 
     /**
      * 获取所有用户
-     *
-     * @return 账号 创建时间
      */
     @GetMapping("user/getAllUser")
     public Result<Object> getAllUser() {
@@ -41,8 +40,6 @@ public class UserController {
 
     /**
      * 获取单个用户
-     *
-     * @param account * string 账号
      */
     @PostMapping("user/getUserByAccount")
     public Result<User> getUserByAccount(@RequestParam String account) {
@@ -98,9 +95,9 @@ public class UserController {
     @PostMapping("user/sendVerifyCode")
     public Result<Object> sendVerifyCode(@RequestParam String account,
             @RequestParam(required = false, defaultValue = "6") int effectiveTime) {
-        if (account.equals("")) {
+        if (account.equals(""))
             return Result.error(CodeMsg.PARAMETER_ISNULL, "请输入账号");
-        }
+
         int i = new Random().nextInt(1000000);
         String code = String.format("%06d", i);
         String message = "您的验证码为：" + code;
@@ -118,5 +115,22 @@ public class UserController {
             }
         }
         return Result.error(CodeMsg.FAIL);
+    }
+
+    /**
+     * 登录
+     * 
+     * @param account  * string 账号
+     * @param password * string 密码
+     */
+    @PostMapping("user/login")
+    public Result<User> login(@RequestParam String account, @RequestParam String password) {
+        password = Md5.md5(password);
+        User user = userService.getUserByAccountAndPassword(account, password);
+        if (user == null) {
+            return Result.error(CodeMsg.FAIL, "账号或密码错误");
+        }
+
+        return Result.success();
     }
 }
