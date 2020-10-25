@@ -17,11 +17,13 @@ spring:
                     starttls:
                         enable: true
                         required: true
+
 mybatis:
     configuration:
         map-underscore-to-camel-case: true
     type-aliases-package: shop.demo.entity
     mapper-locations: classpath:mapper/*.xml
+
 server:
     port: 8001
     servlet:

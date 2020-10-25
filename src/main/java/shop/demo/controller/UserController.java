@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import ch.qos.logback.core.subst.Token;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Result;
 import shop.demo.entity.User;
@@ -14,11 +16,19 @@ import shop.demo.entity.VerifyCode;
 import shop.demo.service.MailService;
 import shop.demo.service.UserService;
 import shop.demo.service.VerifyCodeService;
+import shop.demo.utils.JWTUtil;
+import shop.demo.utils.Jwt;
 import shop.demo.utils.Md5;
+import shop.demo.utils.TokenUtil;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+import com.auth0.jwt.JWT;
 
 @RestController
 public class UserController {
@@ -124,12 +134,16 @@ public class UserController {
      * @param password * string 密码
      */
     @PostMapping("user/login")
-    public Result<User> login(@RequestParam String account, @RequestParam String password) {
-        password = Md5.md5(password);
-        User user = userService.getUserByAccountAndPassword(account, password);
+    public Result<User> login(HttpServletResponse response, @RequestParam String account,
+            @RequestParam String password) {
+        String passwordMd5 = Md5.md5(password);
+        User user = userService.getUserByAccountAndPassword(account, passwordMd5);
         if (user == null) {
             return Result.error(CodeMsg.FAIL, "账号或密码错误");
         }
+
+        Cookie cookie = new Cookie("sessionId", account);
+        response.addCookie(cookie);
 
         return Result.success();
     }
