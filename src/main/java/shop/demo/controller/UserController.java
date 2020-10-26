@@ -1,14 +1,11 @@
 package shop.demo.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.core.subst.Token;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Result;
 import shop.demo.entity.User;
@@ -16,8 +13,6 @@ import shop.demo.entity.VerifyCode;
 import shop.demo.service.MailService;
 import shop.demo.service.UserService;
 import shop.demo.service.VerifyCodeService;
-import shop.demo.utils.JWTUtil;
-import shop.demo.utils.Jwt;
 import shop.demo.utils.Md5;
 import shop.demo.utils.TokenUtil;
 
@@ -27,8 +22,6 @@ import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
-import com.auth0.jwt.JWT;
 
 @RestController
 public class UserController {
@@ -54,6 +47,9 @@ public class UserController {
     @PostMapping("user/getUserByAccount")
     public Result<User> getUserByAccount(@RequestParam String account) {
         User user = userService.getUserByAccount(account);
+        if (user == null) {
+            return Result.error(CodeMsg.NOT_FIND_DATA);
+        }
         return Result.success(user);
     }
 
@@ -108,6 +104,10 @@ public class UserController {
         if (account.equals(""))
             return Result.error(CodeMsg.PARAMETER_ISNULL, "请输入账号");
 
+        int index = account.indexOf("@");
+        if (!account.substring(index + 1, account.length()).equals("qq.com"))
+            return Result.error(CodeMsg.FAIL, "仅支持QQ邮箱");
+
         int i = new Random().nextInt(1000000);
         String code = String.format("%06d", i);
         String message = "您的验证码为：" + code;
@@ -142,8 +142,11 @@ public class UserController {
             return Result.error(CodeMsg.FAIL, "账号或密码错误");
         }
 
-        Cookie cookie = new Cookie("sessionId", account);
+        String token = TokenUtil.token(account, password);
+        Cookie cookie = new Cookie("sessionId", token);
         response.addCookie(cookie);
+
+        System.out.println(TokenUtil.verify(token));
 
         return Result.success();
     }
