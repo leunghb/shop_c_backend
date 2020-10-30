@@ -143,10 +143,8 @@ public class UserController {
         }
 
         String token = TokenUtil.token(account, password);
-        Cookie cookie = new Cookie("sessionId", token);
+        Cookie cookie = new Cookie("shopSessionId", token);
         response.addCookie(cookie);
-
-        System.out.println(TokenUtil.verify(token));
 
         return Result.success();
     }
