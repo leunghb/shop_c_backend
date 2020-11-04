@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -55,14 +54,14 @@ public class UserController {
 
     /**
      * 注册
-     * 
+     *
      * @param account  * string 账号
      * @param password * string 密码
      * @param code     * string 验证码
      */
     @PostMapping("user/register")
     public Result<Object> register(@RequestParam String account, @RequestParam String password,
-            @RequestParam String code) {
+                                   @RequestParam String code) {
         User user = userService.getUserByAccount(account);
         if (user != null)
             return Result.error(CodeMsg.FAIL, "账号已存在");
@@ -100,7 +99,7 @@ public class UserController {
      */
     @PostMapping("user/sendVerifyCode")
     public Result<Object> sendVerifyCode(@RequestParam String account,
-            @RequestParam(required = false, defaultValue = "6") int effectiveTime) {
+                                         @RequestParam(required = false, defaultValue = "6") int effectiveTime) {
         if (account.equals(""))
             return Result.error(CodeMsg.PARAMETER_ISNULL, "请输入账号");
 
@@ -129,13 +128,13 @@ public class UserController {
 
     /**
      * 登录
-     * 
+     *
      * @param account  * string 账号
      * @param password * string 密码
      */
     @PostMapping("user/login")
-    public Result<User> login(HttpServletResponse response, @RequestParam String account,
-            @RequestParam String password) {
+    public Result<Object> login(@RequestParam String account,
+                                @RequestParam String password) {
         String passwordMd5 = Md5.md5(password);
         User user = userService.getUserByAccountAndPassword(account, passwordMd5);
         if (user == null) {
@@ -143,9 +142,7 @@ public class UserController {
         }
 
         String token = TokenUtil.token(account, password);
-        Cookie cookie = new Cookie("shopSessionId", token);
-        response.addCookie(cookie);
 
-        return Result.success();
+        return Result.success(token);
     }
 }
