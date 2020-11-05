@@ -14,4 +14,6 @@ public interface UserMapper {
     int addUser(String account, String password);
 
     User getUserByAccountAndPassword(String account, String password);
+
+    int putUserPwdByAccount(String account, String password);
 }

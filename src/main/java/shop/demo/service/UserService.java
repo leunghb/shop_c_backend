@@ -27,4 +27,8 @@ public class UserService {
     public User getUserByAccountAndPassword(String account, String password) {
         return userMapper.getUserByAccountAndPassword(account, password);
     }
+
+    public int putUserPwdByAccount(String account, String password) {
+        return userMapper.putUserPwdByAccount(account, password);
+    }
 }

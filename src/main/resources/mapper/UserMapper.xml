@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.UserMapper">
-    <select id="getAllUser" resultType="User" parameterType="User">
+    <select id="getAllUser" resultType="shop.demo.entity.User" parameterType="shop.demo.entity.User">
         select account,createdAt from user;
     </select>
 
-    <select id="getUserByAccount" resultType="User" parameterType="User">
-        select account,createdAt from user where account = #{account};
+    <select id="getUserByAccount" resultType="shop.demo.entity.User" parameterType="shop.demo.entity.User">
+        select account,createdAt from user where account = #{account} limit 1;
     </select>
 
-    <insert id="addUser" parameterType="User">
+    <insert id="addUser" parameterType="shop.demo.entity.User">
         insert into user(account,password) values(#{account},#{password})
     </insert>
 
-    <select id="getUserByAccountAndPassword" resultType="User" parameterType="User">
+    <select id="getUserByAccountAndPassword" resultType="shop.demo.entity.User" parameterType="shop.demo.entity.User">
         select account from user where account = #{account} and password = #{password}
     </select>
+
+    <update id="putUserPwdByAccount" parameterType="shop.demo.entity.User">
+        update user set password = #{password} where account = #{account} limit 1;
+    </update>
 </mapper>

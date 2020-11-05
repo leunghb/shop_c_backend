@@ -5,7 +5,7 @@ public class CodeMsg {
     private String message;
     // 按照模块定义CodeMsg
     // 通用异常
-    public static CodeMsg SUCCESS = new CodeMsg(0, "success");
+    public static CodeMsg SUCCESS = new CodeMsg(0, "成功");
     public static CodeMsg FAIL = new CodeMsg(400, "失败");
     public static CodeMsg SERVER_EXCEPTION = new CodeMsg(500100, "服务端异常");
     public static CodeMsg PARAMETER_ISNULL = new CodeMsg(500101, "输入参数为空");

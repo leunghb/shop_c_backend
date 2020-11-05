@@ -16,9 +16,7 @@ import shop.demo.service.VerifyCodeService;
 import shop.demo.utils.Md5;
 import shop.demo.utils.TokenUtil;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,6 +40,8 @@ public class UserController {
 
     /**
      * 获取单个用户
+     *
+     * @param account * string 账号
      */
     @PostMapping("user/getUserByAccount")
     public Result<User> getUserByAccount(@RequestParam String account) {
@@ -66,22 +66,11 @@ public class UserController {
         if (user != null)
             return Result.error(CodeMsg.FAIL, "账号已存在");
 
-        VerifyCode verifyCode = verifyCodeService.getVerifyCodeByAccount(account);
-        if (verifyCode == null)
-            return Result.error(CodeMsg.FAIL, "账号与验证码不一致");
-
-        int effectiveTime = verifyCode.getEffectiveTime();
-        Date updatedAt = verifyCode.getUpdatedAt();
-        Date nowTime = new Date();
-        int time = effectiveTime * 60 * 1000;
-        Date lastTime = new Date(updatedAt.getTime() + time);
-
-        if (nowTime.compareTo(lastTime) > 0)
-            return Result.error(CodeMsg.FAIL, "验证码已失效");
-
-        String correctVerifyCode = verifyCode.getCode();
-        if (!code.equals(correctVerifyCode))
-            return Result.error(CodeMsg.FAIL, "验证码错误");
+        HashMap map = checkCode(account, code);
+        if (map.get("success").equals(false)) {
+            String message = (String) map.get("message");
+            return Result.success(CodeMsg.FAIL, message);
+        }
 
         password = Md5.md5(password);
         int row = userService.addUser(account, password);
@@ -89,6 +78,39 @@ public class UserController {
             return Result.error(CodeMsg.FAIL, "注册失败");
 
         return Result.success(CodeMsg.SUCCESS, "注册成功");
+    }
+
+    public HashMap checkCode(String account, String code) {
+        HashMap map = new HashMap();
+
+        VerifyCode verifyCode = verifyCodeService.getVerifyCodeByAccount(account);
+        if (verifyCode == null) {
+            map.put("success", false);
+            map.put("message", "账号与验证码不一致");
+            return map;
+        }
+
+        int effectiveTime = verifyCode.getEffectiveTime();
+        Date updatedAt = verifyCode.getUpdatedAt();
+        Date nowTime = new Date();
+        int time = effectiveTime * 60 * 1000;
+        Date lastTime = new Date(updatedAt.getTime() + time);
+
+        if (nowTime.compareTo(lastTime) > 0) {
+            map.put("success", false);
+            map.put("message", "验证码已失效");
+            return map;
+        }
+
+        String correctVerifyCode = verifyCode.getCode();
+        if (!code.equals(correctVerifyCode)) {
+            map.put("success", false);
+            map.put("message", "验证码错误");
+            return map;
+        }
+
+        map.put("success", true);
+        return map;
     }
 
     /**
@@ -116,7 +138,7 @@ public class UserController {
             try {
                 boolean success = mailService.sendSimpleMail(account, "验证码", message);
                 if (success) {
-                    return Result.success("验证码已发送至邮箱");
+                    return Result.success(CodeMsg.SUCCESS, "验证码已发送至邮箱");
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -144,5 +166,33 @@ public class UserController {
         String token = TokenUtil.token(account, password);
 
         return Result.success(token);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param account  * string 账号
+     * @param password * string 密码
+     * @param code     * string 验证码
+     */
+    @PostMapping("user/updatePwd")
+    public Result<Object> updatePwd(@RequestParam String account, @RequestParam String password,
+                                    @RequestParam String code) {
+        User user = userService.getUserByAccount(account);
+        if (user == null)
+            return Result.error(CodeMsg.FAIL, "账号不存在");
+
+        HashMap map = checkCode(account, code);
+        if (map.get("success").equals(false)) {
+            String message = (String) map.get("message");
+            return Result.success(CodeMsg.FAIL, message);
+        }
+
+        password = Md5.md5(password);
+        int row = userService.putUserPwdByAccount(account, password);
+        if (!(row > 0))
+            return Result.error(CodeMsg.FAIL, "修改密码失败");
+
+        return Result.success(CodeMsg.SUCCESS, "修改密码成功");
     }
 }
