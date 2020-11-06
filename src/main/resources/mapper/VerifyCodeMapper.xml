@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.VerifyCodeMapper">
     <insert id="addVerifyCode" parameterType="VerifyCode">
-        insert into verifyCode(account,code,effectiveTime) values(#{account},#{code},#{effectiveTime}) on duplicate key update code=#{code}, effectiveTime=#{effectiveTime};
+        insert into verify_code(account,code,effectiveTime) values(#{account},#{code},#{effectiveTime}) on duplicate key update code=#{code}, effectiveTime=#{effectiveTime};
     </insert>
 
     <select id="getVerifyCodeByAccount" parameterType="VerifyCode" resultType="VerifyCode">
-        select effectiveTime,updatedAt,code from verifyCode where account=#{account};
+        select effectiveTime,updatedAt,code from verify_code where account=#{account};
     </select>
 </mapper>

@@ -5,29 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class User {
-    private Long id;
-    private String account;
+public class User extends Common {
     private String password;
-    private Date createdAt;
-    private Date updatedAt;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
+    private int balance;
 
     public String getPassword() {
         return password;
@@ -37,41 +17,33 @@ public class User {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(account, user.account) && Objects.equals(password, user.password)
-                && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
+        return balance == user.balance &&
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, account, password, createdAt, updatedAt);
+        return Objects.hash(password, balance);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", account='" + account + '\'' + ", password='" + password + '\'' + ", createdAt="
-                + createdAt + ", updatedAt=" + updatedAt + '}';
+        return "User{" +
+                "password='" + password + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 }
