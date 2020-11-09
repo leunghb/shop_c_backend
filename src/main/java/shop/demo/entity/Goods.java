@@ -2,14 +2,19 @@ package shop.demo.entity;
 
 import java.util.Objects;
 
+/*商品*/
 public class Goods extends Common {
     private String goodsId;
+    private int goodsTypeId;
     private int originalPrice;
     private int discountPrice;
     private String cover;
     private String mainTitle;
     private String subTitle;
     private String content;
+    private int salesVolume;
+    private int soldOut;
+    private int stock;
 
     public String getGoodsId() {
         return goodsId;
@@ -17,6 +22,14 @@ public class Goods extends Common {
 
     public void setGoodsId(String goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public int getGoodsTypeId() {
+        return goodsTypeId;
+    }
+
+    public void setGoodsTypeId(int goodsTypeId) {
+        this.goodsTypeId = goodsTypeId;
     }
 
     public int getOriginalPrice() {
@@ -67,6 +80,47 @@ public class Goods extends Common {
         this.content = content;
     }
 
+    public int getSalesVolume() {
+        return salesVolume;
+    }
+
+    public void setSalesVolume(int salesVolume) {
+        this.salesVolume = salesVolume;
+    }
+
+    public int getSoldOut() {
+        return soldOut;
+    }
+
+    public void setSoldOut(int soldOut) {
+        this.soldOut = soldOut;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "goodsId='" + goodsId + '\'' +
+                ", goodsTypeId='" + goodsTypeId + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", discountPrice=" + discountPrice +
+                ", cover='" + cover + '\'' +
+                ", mainTitle='" + mainTitle + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", content='" + content + '\'' +
+                ", salesVolume=" + salesVolume +
+                ", soldOut=" + soldOut +
+                ", stock=" + stock +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,7 +129,11 @@ public class Goods extends Common {
         Goods goods = (Goods) o;
         return originalPrice == goods.originalPrice &&
                 discountPrice == goods.discountPrice &&
+                salesVolume == goods.salesVolume &&
+                soldOut == goods.soldOut &&
+                stock == goods.stock &&
                 Objects.equals(goodsId, goods.goodsId) &&
+                Objects.equals(goodsTypeId, goods.goodsTypeId) &&
                 Objects.equals(cover, goods.cover) &&
                 Objects.equals(mainTitle, goods.mainTitle) &&
                 Objects.equals(subTitle, goods.subTitle) &&
@@ -84,19 +142,6 @@ public class Goods extends Common {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsId, originalPrice, discountPrice, cover, mainTitle, subTitle, content);
-    }
-
-    @Override
-    public String toString() {
-        return "Goods{" +
-                "goodsId='" + goodsId + '\'' +
-                ", originalPrice=" + originalPrice +
-                ", discountPrice=" + discountPrice +
-                ", cover='" + cover + '\'' +
-                ", mainTitle='" + mainTitle + '\'' +
-                ", subTitle='" + subTitle + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, salesVolume, soldOut, stock);
     }
 }

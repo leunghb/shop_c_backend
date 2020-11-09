@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 import java.util.Objects;
 
+/*用户基础信息*/
 public class User extends Common {
     private String password;
     private int balance;

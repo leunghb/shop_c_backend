@@ -3,6 +3,7 @@ package shop.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import shop.demo.entity.User;
+import shop.demo.entity.UserBalanceRecord;
 import shop.demo.mapper.UserMapper;
 
 import java.util.List;
@@ -30,5 +31,9 @@ public class UserService {
 
     public int putUserPwdByAccount(String account, String password) {
         return userMapper.putUserPwdByAccount(account, password);
+    }
+
+    public List<UserBalanceRecord> getUserBalanceRecord(String account) {
+        return userMapper.getUserBalanceRecord(account);
     }
 }

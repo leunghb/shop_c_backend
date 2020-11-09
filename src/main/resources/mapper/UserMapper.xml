@@ -6,7 +6,7 @@
     </select>
 
     <select id="getUserByAccount" resultType="shop.demo.entity.User" parameterType="shop.demo.entity.User">
-        select account,createdAt from user where account = #{account} limit 1;
+        select account,balance,createdAt from user where account = #{account} limit 1;
     </select>
 
     <insert id="addUser" parameterType="shop.demo.entity.User">
@@ -20,4 +20,10 @@
     <update id="putUserPwdByAccount" parameterType="shop.demo.entity.User">
         update user set password = #{password} where account = #{account} limit 1;
     </update>
+
+    <select id="getUserBalanceRecord" parameterType="shop.demo.entity.UserBalanceRecord"
+            resultType="shop.demo.entity.UserBalanceRecord">
+        select account,useType,useAmount,orderId,createdAt,updatedAt from user_balance_record where account =
+        #{account};
+    </select>
 </mapper>

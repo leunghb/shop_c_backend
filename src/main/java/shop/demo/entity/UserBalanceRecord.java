@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
 import java.util.Objects;
 
-/*用户余额记录*/
+/*用户余额使用记录*/
 public class UserBalanceRecord extends Common {
     private int useType;
     private int useAmount;
-    private int orderId;
+    private String orderId;
 
     public int getUseType() {
         return useType;
@@ -27,11 +27,11 @@ public class UserBalanceRecord extends Common {
         this.useAmount = useAmount;
     }
 
-    public int getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

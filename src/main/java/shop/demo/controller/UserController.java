@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import shop.demo.entity.CodeMsg;
-import shop.demo.entity.Result;
-import shop.demo.entity.User;
-import shop.demo.entity.VerifyCode;
+import shop.demo.config.UserLoginToken;
+import shop.demo.entity.*;
 import shop.demo.service.MailService;
 import shop.demo.service.UserService;
 import shop.demo.service.VerifyCodeService;
@@ -194,5 +192,20 @@ public class UserController {
             return Result.error(CodeMsg.FAIL, "修改密码失败");
 
         return Result.success(CodeMsg.SUCCESS, "修改密码成功");
+    }
+
+    /**
+     * 获取用户余额使用记录
+     *
+     * @param account * string 账号
+     */
+    @UserLoginToken
+    @PostMapping("user/getUserBalanceRecord")
+    public Result<Object> getUserBalanceRecord(String account) {
+        if (account == null) {
+            return Result.error(CodeMsg.NOT_FIND_DATA, "缺少账号");
+        }
+        List<UserBalanceRecord> records = userService.getUserBalanceRecord(account);
+        return Result.success(records);
     }
 }

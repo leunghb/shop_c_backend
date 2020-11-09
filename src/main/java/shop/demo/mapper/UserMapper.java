@@ -2,6 +2,7 @@ package shop.demo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import shop.demo.entity.User;
+import shop.demo.entity.UserBalanceRecord;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface UserMapper {
     User getUserByAccountAndPassword(String account, String password);
 
     int putUserPwdByAccount(String account, String password);
+
+    List<UserBalanceRecord> getUserBalanceRecord(String account);
 }

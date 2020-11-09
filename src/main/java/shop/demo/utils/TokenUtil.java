@@ -38,6 +38,7 @@ public class TokenUtil {
     }
 
     public static boolean verify(String token) {
+        System.out.println(token);
         /**
          * @desc 验证token，通过返回true
          * @params [token]需要校验的串
@@ -46,7 +47,6 @@ public class TokenUtil {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
-            System.out.println(jwt);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
