@@ -33,15 +33,18 @@ public class GoodsController {
      * @param soldOut     int 状态 0-未下架 1-已下架 -1-全部
      * @param goodsTypeId int 商品分类id -1-全部
      * @param mainTitle   String 商品主标题
+     * @param page        String 页数
+     * @param limit       String 每页条数
      */
     @PostMapping("goods/getGoods")
     public Result<Object> getGoods(@RequestParam(required = false, defaultValue = "-1") int soldOut,
                                    @RequestParam(required = false, defaultValue = "-1") int goodsTypeId,
-                                   @RequestParam(required = false, defaultValue = "null") String mainTitle) {
-        System.out.println(soldOut);
-        System.out.println(goodsTypeId);
-        System.out.println(mainTitle);
-        List<Goods> goods = goodsService.getGoods(soldOut, goodsTypeId, mainTitle);
+                                   @RequestParam(required = false, defaultValue = "null") String mainTitle,
+                                   @RequestParam(required = false, defaultValue = "10") int limit,
+                                   @RequestParam(required = false, defaultValue = "1") int page) {
+        page = (page - 1) * limit;
+        System.out.println(page);
+        List<Goods> goods = goodsService.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
         return Result.success(goods);
     }
 }

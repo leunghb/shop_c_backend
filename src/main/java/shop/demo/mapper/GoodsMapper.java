@@ -11,5 +11,5 @@ import java.util.List;
 public interface GoodsMapper {
     List<GoodsType> getGoodsType(int soldOut);
 
-    List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle);
+    List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle, int limit, int page);
 }

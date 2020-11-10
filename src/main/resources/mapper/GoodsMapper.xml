@@ -21,6 +21,7 @@
             </if>
         </where>
         order by createdAt desc
+        limit #{limit} offset #{page}
         ;
     </select>
 </mapper>
