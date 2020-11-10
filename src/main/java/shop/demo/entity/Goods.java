@@ -1,12 +1,13 @@
 package shop.demo.entity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /*商品*/
 public class Goods extends Common {
     private String goodsId;
-    private int goodsTypeId;
-    private int originalPrice;
+    private BigDecimal goodsTypeId;
+    private BigDecimal originalPrice;
     private int discountPrice;
     private String cover;
     private String mainTitle;
@@ -24,19 +25,19 @@ public class Goods extends Common {
         this.goodsId = goodsId;
     }
 
-    public int getGoodsTypeId() {
+    public BigDecimal getGoodsTypeId() {
         return goodsTypeId;
     }
 
-    public void setGoodsTypeId(int goodsTypeId) {
+    public void setGoodsTypeId(BigDecimal goodsTypeId) {
         this.goodsTypeId = goodsTypeId;
     }
 
-    public int getOriginalPrice() {
+    public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(int originalPrice) {
+    public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
 
