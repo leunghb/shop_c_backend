@@ -2,6 +2,7 @@ package shop.demo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.Goods;
 import shop.demo.entity.GoodsType;
 
@@ -12,4 +13,6 @@ public interface GoodsMapper {
     List<GoodsType> getGoodsType(int soldOut);
 
     List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle, int limit, int page);
+
+    List<Goods> getHotGoods();
 }

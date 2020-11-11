@@ -5,7 +5,9 @@ import java.util.Objects;
 /*商品分类*/
 public class GoodsType extends Common {
     private String title;
-    private int soldOut;
+    private Integer soldOut;
+    private Integer priority;
+    private String icon;
 
     public String getTitle() {
         return title;
@@ -15,12 +17,28 @@ public class GoodsType extends Common {
         this.title = title;
     }
 
-    public int getSoldOut() {
+    public Integer getSoldOut() {
         return soldOut;
     }
 
-    public void setSoldOut(int soldOut) {
+    public void setSoldOut(Integer soldOut) {
         this.soldOut = soldOut;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @Override
@@ -30,12 +48,14 @@ public class GoodsType extends Common {
         if (!super.equals(o)) return false;
         GoodsType goodsType = (GoodsType) o;
         return soldOut == goodsType.soldOut &&
-                Objects.equals(title, goodsType.title);
+                priority == goodsType.priority &&
+                Objects.equals(title, goodsType.title) &&
+                Objects.equals(icon, goodsType.icon);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, soldOut);
+        return Objects.hash(super.hashCode(), title, soldOut, priority, icon);
     }
 
     @Override
@@ -43,6 +63,8 @@ public class GoodsType extends Common {
         return "GoodsType{" +
                 "title='" + title + '\'' +
                 ", soldOut=" + soldOut +
+                ", priority=" + priority +
+                ", icon='" + icon + '\'' +
                 '}';
     }
 }

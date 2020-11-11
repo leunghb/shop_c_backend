@@ -1,6 +1,7 @@
 package shop.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class GoodsController {
     /**
      * 获取商品分类
      *
-     * @param soldOut int 状态 0-未下架 1-已下架
+     * @param soldOut int 状态 0-未下架 1-已下架 -1-全部
      */
     @PostMapping("goods/getGoodsType")
     public Result<Object> getGoodsType(@RequestParam(required = false, defaultValue = "0") int soldOut) {
@@ -28,9 +29,9 @@ public class GoodsController {
     }
 
     /**
-     * 获取商品
+     * 获取商品列表
      *
-     * @param soldOut     int 状态 0-未下架 1-已下架 -1-全部
+     * @param soldOut     int 状态 0-上架 1-已下架 -1-全部
      * @param goodsTypeId int 商品分类id -1-全部
      * @param mainTitle   String 商品主标题
      * @param page        String 页数
@@ -39,12 +40,21 @@ public class GoodsController {
     @PostMapping("goods/getGoods")
     public Result<Object> getGoods(@RequestParam(required = false, defaultValue = "-1") int soldOut,
                                    @RequestParam(required = false, defaultValue = "-1") int goodsTypeId,
-                                   @RequestParam(required = false, defaultValue = "null") String mainTitle,
+                                   @RequestParam(required = false, defaultValue = "") String mainTitle,
                                    @RequestParam(required = false, defaultValue = "10") int limit,
                                    @RequestParam(required = false, defaultValue = "1") int page) {
         page = (page - 1) * limit;
         System.out.println(page);
-        List<Goods> goods = goodsService.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
-        return Result.success(goods);
+        List<Goods> list = goodsService.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
+        return Result.success(list);
+    }
+
+    /**
+     * 获取销量前三商品
+     */
+    @GetMapping("goods/getHotGoods")
+    public Result<Object> getHotGoods() {
+        List<Goods> list = goodsService.getHotGoods();
+        return Result.success(list);
     }
 }

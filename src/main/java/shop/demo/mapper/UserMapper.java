@@ -1,6 +1,7 @@
 package shop.demo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.User;
 import shop.demo.entity.UserBalanceRecord;
 

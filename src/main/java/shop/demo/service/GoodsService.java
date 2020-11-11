@@ -10,6 +10,7 @@ import shop.demo.mapper.GoodsMapper;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class GoodsService {
     @Autowired
@@ -21,5 +22,9 @@ public class GoodsService {
 
     public List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle, int limit, int page) {
         return goodsMapper.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
+    }
+
+    public List<Goods> getHotGoods() {
+        return goodsMapper.getHotGoods();
     }
 }

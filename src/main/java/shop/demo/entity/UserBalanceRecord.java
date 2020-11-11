@@ -7,23 +7,23 @@ import java.util.Objects;
 
 /*用户余额使用记录*/
 public class UserBalanceRecord extends Common {
-    private int useType;
-    private int useAmount;
+    private Integer useType;
+    private Integer useAmount;
     private String orderId;
 
-    public int getUseType() {
+    public Integer getUseType() {
         return useType;
     }
 
-    public void setUseType(int useType) {
+    public void setUseType(Integer useType) {
         this.useType = useType;
     }
 
-    public int getUseAmount() {
+    public Integer getUseAmount() {
         return useAmount;
     }
 
-    public void setUseAmount(int useAmount) {
+    public void setUseAmount(Integer useAmount) {
         this.useAmount = useAmount;
     }
 

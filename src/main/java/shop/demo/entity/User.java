@@ -8,7 +8,7 @@ import java.util.Objects;
 /*用户基础信息*/
 public class User extends Common {
     private String password;
-    private int balance;
+    private Integer balance;
 
     public String getPassword() {
         return password;
@@ -18,11 +18,11 @@ public class User extends Common {
         this.password = password;
     }
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 

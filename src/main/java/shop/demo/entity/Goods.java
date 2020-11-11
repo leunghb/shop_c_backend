@@ -1,5 +1,7 @@
 package shop.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -8,14 +10,14 @@ public class Goods extends Common {
     private String goodsId;
     private BigDecimal goodsTypeId;
     private BigDecimal originalPrice;
-    private int discountPrice;
+    private Integer discountPrice;
     private String cover;
     private String mainTitle;
     private String subTitle;
     private String content;
-    private int salesVolume;
-    private int soldOut;
-    private int stock;
+    private Integer salesVolume;
+    private Integer soldOut;
+    private Integer stock;
 
     public String getGoodsId() {
         return goodsId;
@@ -41,11 +43,11 @@ public class Goods extends Common {
         this.originalPrice = originalPrice;
     }
 
-    public int getDiscountPrice() {
+    public Integer getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(int discountPrice) {
+    public void setDiscountPrice(Integer discountPrice) {
         this.discountPrice = discountPrice;
     }
 
@@ -81,27 +83,27 @@ public class Goods extends Common {
         this.content = content;
     }
 
-    public int getSalesVolume() {
+    public Integer getSalesVolume() {
         return salesVolume;
     }
 
-    public void setSalesVolume(int salesVolume) {
+    public void setSalesVolume(Integer salesVolume) {
         this.salesVolume = salesVolume;
     }
 
-    public int getSoldOut() {
+    public Integer getSoldOut() {
         return soldOut;
     }
 
-    public void setSoldOut(int soldOut) {
+    public void setSoldOut(Integer soldOut) {
         this.soldOut = soldOut;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
