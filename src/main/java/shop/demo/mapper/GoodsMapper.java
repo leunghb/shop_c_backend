@@ -14,5 +14,5 @@ public interface GoodsMapper {
 
     List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle, int limit, int page);
 
-    List<Goods> getHotGoods();
+    List<Goods> getHotGoods(int num);
 }

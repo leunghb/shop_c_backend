@@ -15,6 +15,7 @@ public class Goods extends Common {
     private String mainTitle;
     private String subTitle;
     private String content;
+    private Integer collectNumber;
     private Integer salesVolume;
     private Integer soldOut;
     private Integer stock;
@@ -107,21 +108,12 @@ public class Goods extends Common {
         this.stock = stock;
     }
 
-    @Override
-    public String toString() {
-        return "Goods{" +
-                "goodsId='" + goodsId + '\'' +
-                ", goodsTypeId='" + goodsTypeId + '\'' +
-                ", originalPrice=" + originalPrice +
-                ", discountPrice=" + discountPrice +
-                ", cover='" + cover + '\'' +
-                ", mainTitle='" + mainTitle + '\'' +
-                ", subTitle='" + subTitle + '\'' +
-                ", content='" + content + '\'' +
-                ", salesVolume=" + salesVolume +
-                ", soldOut=" + soldOut +
-                ", stock=" + stock +
-                '}';
+    public Integer getCollectNumber() {
+        return collectNumber;
+    }
+
+    public void setCollectNumber(Integer collectNumber) {
+        this.collectNumber = collectNumber;
     }
 
     @Override
@@ -130,21 +122,40 @@ public class Goods extends Common {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Goods goods = (Goods) o;
-        return originalPrice == goods.originalPrice &&
-                discountPrice == goods.discountPrice &&
-                salesVolume == goods.salesVolume &&
-                soldOut == goods.soldOut &&
-                stock == goods.stock &&
-                Objects.equals(goodsId, goods.goodsId) &&
+        return Objects.equals(goodsId, goods.goodsId) &&
                 Objects.equals(goodsTypeId, goods.goodsTypeId) &&
+                Objects.equals(originalPrice, goods.originalPrice) &&
+                Objects.equals(discountPrice, goods.discountPrice) &&
                 Objects.equals(cover, goods.cover) &&
                 Objects.equals(mainTitle, goods.mainTitle) &&
                 Objects.equals(subTitle, goods.subTitle) &&
-                Objects.equals(content, goods.content);
+                Objects.equals(content, goods.content) &&
+                Objects.equals(collectNumber, goods.collectNumber) &&
+                Objects.equals(salesVolume, goods.salesVolume) &&
+                Objects.equals(soldOut, goods.soldOut) &&
+                Objects.equals(stock, goods.stock);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, salesVolume, soldOut, stock);
+        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, collectNumber, salesVolume, soldOut, stock);
+    }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "goodsId='" + goodsId + '\'' +
+                ", goodsTypeId=" + goodsTypeId +
+                ", originalPrice=" + originalPrice +
+                ", discountPrice=" + discountPrice +
+                ", cover='" + cover + '\'' +
+                ", mainTitle='" + mainTitle + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", content='" + content + '\'' +
+                ", collectNumber=" + collectNumber +
+                ", salesVolume=" + salesVolume +
+                ", soldOut=" + soldOut +
+                ", stock=" + stock +
+                '}';
     }
 }

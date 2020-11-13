@@ -44,17 +44,18 @@ public class GoodsController {
                                    @RequestParam(required = false, defaultValue = "10") int limit,
                                    @RequestParam(required = false, defaultValue = "1") int page) {
         page = (page - 1) * limit;
-        System.out.println(page);
         List<Goods> list = goodsService.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
         return Result.success(list);
     }
 
     /**
      * 获取销量前三商品
+     *
+     * @param num int 数目
      */
     @GetMapping("goods/getHotGoods")
-    public Result<Object> getHotGoods() {
-        List<Goods> list = goodsService.getHotGoods();
+    public Result<Object> getHotGoods(@RequestParam(required = false,defaultValue = "3") int num) {
+        List<Goods> list = goodsService.getHotGoods(num);
         return Result.success(list);
     }
 }

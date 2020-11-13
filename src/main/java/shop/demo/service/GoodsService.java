@@ -24,7 +24,7 @@ public class GoodsService {
         return goodsMapper.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
     }
 
-    public List<Goods> getHotGoods() {
-        return goodsMapper.getHotGoods();
+    public List<Goods> getHotGoods(int num) {
+        return goodsMapper.getHotGoods(num);
     }
 }
