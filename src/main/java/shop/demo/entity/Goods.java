@@ -15,6 +15,7 @@ public class Goods extends Common {
     private String mainTitle;
     private String subTitle;
     private String content;
+    private String specification;
     private Integer collectNumber;
     private Integer salesVolume;
     private Integer soldOut;
@@ -116,6 +117,14 @@ public class Goods extends Common {
         this.collectNumber = collectNumber;
     }
 
+    public String getSku() {
+        return specification;
+    }
+
+    public void setSku(String specification) {
+        this.specification = specification;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -130,6 +139,7 @@ public class Goods extends Common {
                 Objects.equals(mainTitle, goods.mainTitle) &&
                 Objects.equals(subTitle, goods.subTitle) &&
                 Objects.equals(content, goods.content) &&
+                Objects.equals(specification, goods.specification) &&
                 Objects.equals(collectNumber, goods.collectNumber) &&
                 Objects.equals(salesVolume, goods.salesVolume) &&
                 Objects.equals(soldOut, goods.soldOut) &&
@@ -138,7 +148,7 @@ public class Goods extends Common {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, collectNumber, salesVolume, soldOut, stock);
+        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, specification, collectNumber, salesVolume, soldOut, stock);
     }
 
     @Override
@@ -152,6 +162,7 @@ public class Goods extends Common {
                 ", mainTitle='" + mainTitle + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", content='" + content + '\'' +
+                ", specification='" + specification + '\'' +
                 ", collectNumber=" + collectNumber +
                 ", salesVolume=" + salesVolume +
                 ", soldOut=" + soldOut +
