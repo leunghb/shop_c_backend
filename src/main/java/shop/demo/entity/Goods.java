@@ -15,7 +15,7 @@ public class Goods extends Common {
     private String mainTitle;
     private String subTitle;
     private String content;
-    private String specification;
+    private String specList;
     private Integer collectNumber;
     private Integer salesVolume;
     private Integer soldOut;
@@ -118,11 +118,11 @@ public class Goods extends Common {
     }
 
     public String getSku() {
-        return specification;
+        return specList;
     }
 
-    public void setSku(String specification) {
-        this.specification = specification;
+    public void setSku(String specList) {
+        this.specList = specList;
     }
 
     @Override
@@ -139,7 +139,7 @@ public class Goods extends Common {
                 Objects.equals(mainTitle, goods.mainTitle) &&
                 Objects.equals(subTitle, goods.subTitle) &&
                 Objects.equals(content, goods.content) &&
-                Objects.equals(specification, goods.specification) &&
+                Objects.equals(specList, goods.specList) &&
                 Objects.equals(collectNumber, goods.collectNumber) &&
                 Objects.equals(salesVolume, goods.salesVolume) &&
                 Objects.equals(soldOut, goods.soldOut) &&
@@ -148,7 +148,7 @@ public class Goods extends Common {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, specification, collectNumber, salesVolume, soldOut, stock);
+        return Objects.hash(super.hashCode(), goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, content, specList, collectNumber, salesVolume, soldOut, stock);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class Goods extends Common {
                 ", mainTitle='" + mainTitle + '\'' +
                 ", subTitle='" + subTitle + '\'' +
                 ", content='" + content + '\'' +
-                ", specification='" + specification + '\'' +
+                ", specList='" + specList + '\'' +
                 ", collectNumber=" + collectNumber +
                 ", salesVolume=" + salesVolume +
                 ", soldOut=" + soldOut +

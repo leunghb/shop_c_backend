@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Goods;
 import shop.demo.entity.GoodsType;
 import shop.demo.entity.Result;
@@ -37,14 +38,14 @@ public class GoodsController {
      * @param page        String 页数
      * @param limit       String 每页条数
      */
-    @PostMapping("goods/getGoods")
+    @PostMapping("goods/getGoodsList")
     public Result<Object> getGoods(@RequestParam(required = false, defaultValue = "-1") int soldOut,
                                    @RequestParam(required = false, defaultValue = "-1") int goodsTypeId,
                                    @RequestParam(required = false, defaultValue = "") String mainTitle,
                                    @RequestParam(required = false, defaultValue = "10") int limit,
                                    @RequestParam(required = false, defaultValue = "1") int page) {
         page = (page - 1) * limit;
-        List<Goods> list = goodsService.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
+        List<Goods> list = goodsService.getGoodsList(soldOut, goodsTypeId, mainTitle, limit, page);
         return Result.success(list);
     }
 
@@ -54,8 +55,22 @@ public class GoodsController {
      * @param num int 数目
      */
     @GetMapping("goods/getHotGoods")
-    public Result<Object> getHotGoods(@RequestParam(required = false,defaultValue = "3") int num) {
+    public Result<Object> getHotGoods(@RequestParam(required = false, defaultValue = "3") int num) {
         List<Goods> list = goodsService.getHotGoods(num);
         return Result.success(list);
+    }
+
+    /**
+     * 获取商品详情
+     *
+     * @param goodsId * String 商品id
+     */
+    @PostMapping("goods/getGoodsDetail")
+    public Result<Object> getGoodsDetail(@RequestParam String goodsId) {
+        Goods goods = goodsService.getGoodsDetail(goodsId);
+        if (goods == null) {
+            return Result.error(CodeMsg.NOT_FIND_DATA);
+        }
+        return Result.success(goods);
     }
 }

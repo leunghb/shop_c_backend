@@ -20,11 +20,15 @@ public class GoodsService {
         return goodsMapper.getGoodsType(soldOut);
     }
 
-    public List<Goods> getGoods(int soldOut, int goodsTypeId, String mainTitle, int limit, int page) {
-        return goodsMapper.getGoods(soldOut, goodsTypeId, mainTitle, limit, page);
+    public List<Goods> getGoodsList(int soldOut, int goodsTypeId, String mainTitle, int limit, int page) {
+        return goodsMapper.getGoodsList(soldOut, goodsTypeId, mainTitle, limit, page);
     }
 
     public List<Goods> getHotGoods(int num) {
         return goodsMapper.getHotGoods(num);
+    }
+
+    public Goods getGoodsDetail(String goodsId) {
+        return goodsMapper.getGoodsDetail(goodsId);
     }
 }
