@@ -5,18 +5,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import shop.demo.entity.CodeMsg;
-import shop.demo.entity.Goods;
-import shop.demo.entity.GoodsType;
-import shop.demo.entity.Result;
+import shop.demo.entity.*;
 import shop.demo.service.GoodsService;
+import shop.demo.service.GoodsSpecsService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private GoodsSpecsService goodsSpecsService;
 
     /**
      * 获取商品分类
@@ -68,9 +70,15 @@ public class GoodsController {
     @PostMapping("goods/getGoodsDetail")
     public Result<Object> getGoodsDetail(@RequestParam String goodsId) {
         Goods goods = goodsService.getGoodsDetail(goodsId);
+        List<GoodsSpecs> goodsSpecsList = goodsSpecsService.getGoodsSpecs(goodsId);
         if (goods == null) {
             return Result.error(CodeMsg.NOT_FIND_DATA);
         }
-        return Result.success(goods);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("goodsInfo", goods);
+        map.put("goodsSpecs", goodsSpecsList);
+
+        return Result.success(map);
     }
 }
