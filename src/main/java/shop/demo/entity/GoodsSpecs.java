@@ -7,7 +7,6 @@ public class GoodsSpecs extends Common {
     private String goodsId;
     private String specs;
     private Integer stock;
-    private String cover;
     private Integer price;
 
     public String getGoodsId() {
@@ -34,20 +33,22 @@ public class GoodsSpecs extends Common {
         this.stock = stock;
     }
 
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
     public Integer getPrice() {
         return price;
     }
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsSpecs{" +
+                "goodsId='" + goodsId + '\'' +
+                ", specs='" + specs + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                '}';
     }
 
     @Override
@@ -59,23 +60,11 @@ public class GoodsSpecs extends Common {
         return Objects.equals(goodsId, that.goodsId) &&
                 Objects.equals(specs, that.specs) &&
                 Objects.equals(stock, that.stock) &&
-                Objects.equals(cover, that.cover) &&
                 Objects.equals(price, that.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsId, specs, stock, cover, price);
-    }
-
-    @Override
-    public String toString() {
-        return "GoodsSpecs{" +
-                "goodsId='" + goodsId + '\'' +
-                ", specs='" + specs + '\'' +
-                ", stock=" + stock +
-                ", cover='" + cover + '\'' +
-                ", price=" + price +
-                '}';
+        return Objects.hash(super.hashCode(), goodsId, specs, stock, price);
     }
 }
