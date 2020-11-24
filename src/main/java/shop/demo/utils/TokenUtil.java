@@ -1,5 +1,7 @@
 package shop.demo.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import com.auth0.jwt.JWTVerifier;
 
 public class TokenUtil {
     // 设置过期时间
-    private static final long EXPIRE_DATE = 15 * 60 * 1000;
+    private static final int EXPIRE_DATE = 30;
     // token秘钥
     private static final String TOKEN_SECRET = "0142ADD7C2664198863943F24bF4B8B9";
 
@@ -20,7 +22,8 @@ public class TokenUtil {
         String token = "";
         try {
             // 过期时间
-            Date date = new Date(System.currentTimeMillis() + EXPIRE_DATE);
+            Date date = new Date();
+            date.setDate(date.getDate() + EXPIRE_DATE);
             // 秘钥及加密算法
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             // 设置头部信息
@@ -38,7 +41,6 @@ public class TokenUtil {
     }
 
     public static boolean verify(String token) {
-        System.out.println(token);
         /**
          * @desc 验证token，通过返回true
          * @params [token]需要校验的串
@@ -47,6 +49,8 @@ public class TokenUtil {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
+            String username = jwt.getClaim("username").asString();
+            System.out.println(username);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
