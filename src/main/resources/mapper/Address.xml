@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.demo.mapper.AddressMapper">
+    <select id="getAddressList" resultType="shop.demo.entity.Address">
+        select id,name,tel,address,isDefault,updatedAt from address where account = #{account} order by
+        updatedAt desc limit 6;
+    </select>
+
+    <insert id="addAddress">
+        <if test="isDefault == 1">
+            update address set isDefault = 0 where account = #{account};
+        </if>
+
+        insert into address (account,name,tel,address,isDefault) values
+        (#{account},#{name},#{tel},#{address},#{isDefault});
+    </insert>
+</mapper>

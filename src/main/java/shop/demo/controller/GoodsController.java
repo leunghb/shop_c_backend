@@ -13,6 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import shop.demo.utils.TokenUtil;
+
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class GoodsController {
     @Autowired

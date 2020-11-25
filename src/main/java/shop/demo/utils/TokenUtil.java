@@ -11,6 +11,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.JWTVerifier;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class TokenUtil {
     // 设置过期时间
     private static final int EXPIRE_DATE = 30;
@@ -31,7 +33,7 @@ public class TokenUtil {
             header.put("typ", "JWT");
             header.put("alg", "HS256");
             // 携带username，password信息，生成签名
-            token = JWT.create().withHeader(header).withClaim("username", username).withClaim("password", password)
+            token = JWT.create().withHeader(header).withClaim("account", username).withClaim("password", password)
                     .withExpiresAt(date).sign(algorithm);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,12 +51,24 @@ public class TokenUtil {
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
-            String username = jwt.getClaim("username").asString();
-            System.out.println(username);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static String getJwtToken(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("token");
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            String account = jwt.getClaim("account").asString();
+            return account;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }

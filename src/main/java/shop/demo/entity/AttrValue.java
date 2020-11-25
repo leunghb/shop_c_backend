@@ -2,17 +2,17 @@ package shop.demo.entity;
 
 import java.util.Objects;
 
-/*规格组*/
-public class attrKey extends Common {
-    private Integer goodsTypeId;
+/*规格值*/
+public class AttrValue extends Common {
+    private Integer attrKeyId;
     private String name;
 
-    public Integer getGoodsTypeId() {
-        return goodsTypeId;
+    public Integer getAttrKeyId() {
+        return attrKeyId;
     }
 
-    public void setGoodsTypeId(Integer goodsTypeId) {
-        this.goodsTypeId = goodsTypeId;
+    public void setAttrKeyId(Integer attrKeyId) {
+        this.attrKeyId = attrKeyId;
     }
 
     public String getName() {
@@ -28,20 +28,20 @@ public class attrKey extends Common {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        attrKey attrKey = (attrKey) o;
-        return Objects.equals(goodsTypeId, attrKey.goodsTypeId) &&
-                Objects.equals(name, attrKey.name);
+        AttrValue attrValue = (AttrValue) o;
+        return Objects.equals(attrKeyId, attrValue.attrKeyId) &&
+                Objects.equals(name, attrValue.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsTypeId, name);
+        return Objects.hash(super.hashCode(), attrKeyId, name);
     }
 
     @Override
     public String toString() {
-        return "attrKey{" +
-                "goodsTypeId=" + goodsTypeId +
+        return "attrValue{" +
+                "attrKeyId=" + attrKeyId +
                 ", name='" + name + '\'' +
                 '}';
     }
