@@ -21,4 +21,16 @@ public class AddressService {
     public int addAddress(String account, String name, String tel, String address, int isDefault) {
         return addressMapper.addAddress(account, name, tel, address, isDefault);
     }
+
+    public int setAllAddressNonDefault(String account) {
+        return addressMapper.setAllAddressNonDefault(account);
+    }
+
+    public int putAddress(String account, String name, String tel, String address, int isDefault, int id) {
+        return addressMapper.putAddress(account, name, tel, address, isDefault, id);
+    }
+
+    public int delAddress(String account, int id) {
+        return addressMapper.delAddress(account, id);
+    }
 }

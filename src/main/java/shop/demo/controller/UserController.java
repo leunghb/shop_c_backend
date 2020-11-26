@@ -201,7 +201,7 @@ public class UserController {
      */
     @UserLoginToken
     @PostMapping("user/getUserBalanceRecord")
-    public Result<Object> getUserBalanceRecord(String account) {
+    public Result<Object> getUserBalanceRecord(@RequestParam String account) {
         if (account == null) {
             return Result.error(CodeMsg.NOT_FIND_DATA, "缺少账号");
         }

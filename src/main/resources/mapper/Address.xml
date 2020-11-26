@@ -2,16 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.AddressMapper">
     <select id="getAddressList" resultType="shop.demo.entity.Address">
-        select id,name,tel,address,isDefault,updatedAt from address where account = #{account} order by
+        select id,name,tel,address,isDefault,updatedAt from address where account = #{account} order by isDefault desc,
         updatedAt desc limit 6;
     </select>
 
     <insert id="addAddress">
-        <if test="isDefault == 1">
-            update address set isDefault = 0 where account = #{account};
-        </if>
-
         insert into address (account,name,tel,address,isDefault) values
         (#{account},#{name},#{tel},#{address},#{isDefault});
     </insert>
+
+    <update id="setAllAddressNonDefault">
+        update address set isDefault = 0 where account = #{account};
+    </update>
+
+    <update id="putAddress">
+        update address set name = #{name}, tel = #{tel}, address = #{address}, isDefault = #{isDefault} where account
+         = #{account} and id = #{id};
+    </update>
+
+    <delete id="delAddress">
+        delete from address where account = #{account} and id = #{id} limit 1;
+    </delete>
 </mapper>

@@ -33,26 +33,62 @@ public class AddressController {
     }
 
     /**
-     * 添加用户地址
+     * 添加或更新用户地址
      *
      * @param name      * String 姓名
      * @param tel       * String 电话
      * @param address   * String 地址
      * @param isDefault int 0-非默认 1-默认
+     * @param type      * int 0-添加 1-修改
+     * @param id        int 地址id
      */
-    @PostMapping("user/addAddress")
-    public Result<Object> addAddress(@RequestParam(required = true) String name,
-                                     @RequestParam(required = true) String tel,
-                                     @RequestParam(required = true) String address,
-                                     @RequestParam(required = false, defaultValue = "0") int isDefault) {
+    @PostMapping("user/addOrPutAddress")
+    public Result<Object> addAddress(@RequestParam String name,
+                                     @RequestParam String tel,
+                                     @RequestParam String address,
+                                     @RequestParam(required = false, defaultValue = "0") int isDefault,
+                                     @RequestParam int type,
+                                     Integer id) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         if (account.length() == 0 || name.length() == 0 || tel.length() == 0 || address.length() == 0) {
             return Result.error(CodeMsg.PARAMETER_ISNULL);
         }
-        int row = addressService.addAddress(account, name, tel, address, isDefault);
-        if (!(row > 0)) {
+        if (!(type == 0 || type == 1)) {
+            return Result.error(CodeMsg.FAIL, "type必须为0或1");
+        }
+        if (isDefault == 1) {
+            addressService.setAllAddressNonDefault(account);
+        }
+        int row = 0;
+        if (type == 0) {
+            row = addressService.addAddress(account, name, tel, address, isDefault);
+        } else {
+            if (!(id > 0)) {
+                return Result.error(CodeMsg.FAIL, "地址id错误");
+            }
+            row = addressService.putAddress(account, name, tel, address, isDefault, id);
+        }
+        if (row == 0) {
             return Result.error(CodeMsg.FAIL, "添加失败");
         }
-        return Result.success(CodeMsg.SUCCESS, "添加成功");
+        return Result.success(CodeMsg.SUCCESS, type == 0 ? "添加成功" : "修改成功");
+    }
+
+    /**
+     * 删除地址
+     *
+     * @param id * int 地址id
+     */
+    @PostMapping("user/delAddress")
+    public Result<Object> delAddress(@RequestParam Integer id) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        if (id == null) {
+            return Result.error(CodeMsg.PARAMETER_ISNULL);
+        }
+        int row = addressService.delAddress(account, id);
+        if (row == 0) {
+            return Result.error(CodeMsg.FAIL, "删除失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "删除成功");
     }
 }

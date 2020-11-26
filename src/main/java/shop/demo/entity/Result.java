@@ -35,7 +35,7 @@ public class Result<T> {
 
     public static <T> Result<T> success(CodeMsg cm, String msg) {
         String str = (String) cm.getMessage();
-        str = str.indexOf("-") > 0 ? str.substring(0, str.indexOf("-")) : str;
+        str = str.indexOf(",") > 0 ? str.substring(0, str.indexOf(",")) : str;
         cm.setMessage(str + "," + msg);
         return new Result<T>(cm);
     }
@@ -68,8 +68,8 @@ public class Result<T> {
      */
     public static <T> Result<T> error(CodeMsg cm, String msg) {
         String str = (String) cm.getMessage();
-        str = str.indexOf("-") > 0 ? str.substring(0, str.indexOf("-")) : str;
-        cm.setMessage(str + "-" + msg);
+        str = str.indexOf(",") > 0 ? str.substring(0, str.indexOf(",")) : str;
+        cm.setMessage(str + "," + msg);
         return new Result<T>(cm);
     }
 
