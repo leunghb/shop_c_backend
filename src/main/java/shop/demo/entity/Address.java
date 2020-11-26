@@ -2,6 +2,7 @@ package shop.demo.entity;
 
 import java.util.Objects;
 
+/*地址*/
 public class Address extends Common {
     private String name;
     private String tel;

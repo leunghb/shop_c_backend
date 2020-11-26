@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.demo.mapper.CartMapper">
+    <insert id="addGoodsToCart">
+        insert into cart (account, goodsSpecsId, goodsId, number) values(#{account}, #{goodsSpecsId}, #{goodsId},
+        #{number})
+    </insert>
+
+    <select id="getCartOneGoods" resultType="shop.demo.entity.Cart">
+        select id, goodsSpecsId, goodsId, number, createdAt, updatedAt from cart where account = #{account} and
+        goodsSpecsId = #{goodsSpecsId} and goodsId = #{goodsId};
+    </select>
+
+    <update id="putCartOneGoods">
+        update cart set number = #{number} where account = #{account} and
+        goodsSpecsId = #{goodsSpecsId} and goodsId = #{goodsId};
+    </update>
+</mapper>

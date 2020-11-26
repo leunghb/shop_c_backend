@@ -35,6 +35,7 @@ public class AddressController {
     /**
      * 添加或更新用户地址
      *
+     * @param account   * String
      * @param name      * String 姓名
      * @param tel       * String 电话
      * @param address   * String 地址
@@ -77,7 +78,8 @@ public class AddressController {
     /**
      * 删除地址
      *
-     * @param id * int 地址id
+     * @param account * String
+     * @param id      * int 地址id
      */
     @PostMapping("user/delAddress")
     public Result<Object> delAddress(@RequestParam Integer id) {
