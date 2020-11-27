@@ -41,8 +41,8 @@ public class GoodsController {
      * @param soldOut     int 状态 0-上架 1-已下架 -1-全部
      * @param goodsTypeId int 商品分类id -1-全部
      * @param mainTitle   String 商品主标题
-     * @param page        String 页数
-     * @param limit       String 每页条数
+     * @param page        int 页数
+     * @param limit       int 每页条数
      */
     @PostMapping("goods/getGoodsList")
     public Result<Object> getGoods(@RequestParam(required = false, defaultValue = "-1") int soldOut,

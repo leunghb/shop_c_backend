@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.CartMapper">
     <insert id="addGoodsToCart">
-        insert into cart (account, goodsSpecsId, goodsId, number) values(#{account}, #{goodsSpecsId}, #{goodsId},
-        #{number})
+        insert into cart (account, goodsSpecsId, goodsId, number, skuDesc, skuCover) values(#{account}, #{goodsSpecsId},
+        #{goodsId}, #{number}, #{skuDesc}, #{skuCover});
     </insert>
 
     <select id="getCartOneGoods" resultType="shop.demo.entity.Cart">
@@ -15,4 +15,13 @@
         update cart set number = #{number} where account = #{account} and
         goodsSpecsId = #{goodsSpecsId} and goodsId = #{goodsId};
     </update>
+
+    <select id="getCartList" resultType="map">
+        select c.goodsSpecsId, c.goodsId, c.number, c.skuDesc, c.skuCover, c.updatedAt, gs.id, gs.specs, gs.stock,
+        gs.price,
+        g.cover,
+        g.mainTitle, g.subTitle
+        from cart c, goods_specs gs, goods g
+        where c.goodsSpecsId = gs.id and c.goodsId = g.goodsId order by updatedAt desc limit #{limit} offset #{page};
+    </select>
 </mapper>

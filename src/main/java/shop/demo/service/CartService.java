@@ -6,14 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.Cart;
 import shop.demo.mapper.CartMapper;
 
+import java.util.List;
+
 @Transactional
 @Service
 public class CartService {
     @Autowired
     private CartMapper cartMapper;
 
-    public int addGoodsToCart(String account, int goodsSpecsId, String goodsId, int number) {
-        return cartMapper.addGoodsToCart(account, goodsSpecsId, goodsId, number);
+    public int addGoodsToCart(String account, int goodsSpecsId, String goodsId, int number, String skuDesc, String skuCover) {
+        return cartMapper.addGoodsToCart(account, goodsSpecsId, goodsId, number, skuDesc, skuCover);
     }
 
     public Cart getCartOneGoods(String account, int goodsSpecsId, String goodsId) {
@@ -22,5 +24,9 @@ public class CartService {
 
     public int putCartOneGoods(String account, int goodsSpecsId, String goodsId, int number) {
         return cartMapper.putCartOneGoods(account, goodsSpecsId, goodsId, number);
+    }
+
+    public List<Object> getCartList(String account, int limit, int page) {
+        return cartMapper.getCartList(account, limit, page);
     }
 }
