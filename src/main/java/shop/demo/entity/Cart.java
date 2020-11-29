@@ -4,12 +4,21 @@ import java.util.Objects;
 
 /*购物车*/
 public class Cart extends Common {
+	private Integer cartId;
     private Integer goodsSpecsId;
     private String goodsId;
     private Integer number;
     private Integer price;
     private String skuDesc;
     private String skuCover;
+    
+    public Integer getCartId() {
+    	return cartId;
+    }
+    
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
 
     public String getSkuDesc() {
         return skuDesc;
@@ -76,6 +85,7 @@ public class Cart extends Common {
         return Objects.equals(goodsSpecsId, cart.goodsSpecsId) &&
                 Objects.equals(goodsId, cart.goodsId) &&
                 Objects.equals(number, cart.number) &&
+                Objects.equals(cartId, cart.cartId) &&
                 Objects.equals(price, cart.price) &&
                 Objects.equals(skuDesc, cart.skuDesc) &&
                 Objects.equals(skuCover, cart.skuCover);
@@ -83,12 +93,13 @@ public class Cart extends Common {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), goodsSpecsId, goodsId, number, price, skuDesc, skuCover);
+        return Objects.hash(super.hashCode(), goodsSpecsId, goodsId, number, price, skuDesc, skuCover, cartId);
     }
 
     @Override
     public String toString() {
         return "Cart{" +
+        		 "cartId=" + cartId +
                 "goodsSpecsId=" + goodsSpecsId +
                 ", goodsId='" + goodsId + '\'' +
                 ", number=" + number +

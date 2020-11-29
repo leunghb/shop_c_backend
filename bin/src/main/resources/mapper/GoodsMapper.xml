@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.demo.mapper.GoodsMapper">
+    <select id="getGoodsType" resultType="shop.demo.entity.GoodsType" parameterType="shop.demo.entity.GoodsType">
+        select id,title,priority,icon,createdAt,updatedAt from goods_type where soldOut = #{soldOut};
+    </select>
+
+    <select id="getGoodsList" resultType="shop.demo.entity.Goods">
+        select id,goodsId,originalPrice,discountPrice,cover,mainTitle from goods
+        <where>
+            <if test="soldOut >= 0">
+                soldOut = #{soldOut}
+            </if>
+            <if test="goodsTypeId > 0">
+                and goodsTypeId = #{goodsTypeId}
+            </if>
+            <if test="mainTitle != ''">
+                and mainTitle like '%' #{mainTitle} '%'
+            </if>
+        </where>
+        order by createdAt desc
+        limit #{limit} offset #{page}
+        ;
+    </select>
+
+    <select id="getHotGoods" resultType="shop.demo.entity.Goods">
+        select id,goodsId,mainTitle,salesVolume,cover from goods order by salesVolume desc, createdAt desc limit #{num};
+    </select>
+
+    <select id="getGoodsDetail" resultType="shop.demo.entity.Goods">
+        select
+        id,goodsId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList,collectNumber
+        from goods where goodsId = #{goodsId};
+    </select>
+</mapper>

@@ -71,4 +71,24 @@ public class CartController {
         List<Object> list = (List<Object>) cartService.getCartList(account, limit, page);
         return Result.success(list);
     }
+    
+    /**
+     * 删除购物车商品
+     * 
+     * @param cartId * int 购物车cartId
+     */
+    @PostMapping("cart/delCartOneGoods")
+    public Result<Object> delCartOneGoods(@RequestParam Integer cartId) {
+    	String account = TokenUtil.getJwtToken(httpServletRequest);
+    	if(cartId == null) {
+    		return Result.error(CodeMsg.PARAMETER_ISNULL);
+    	}
+    	int row = cartService.delCartOneGoods(account, cartId);
+    	
+    	if(row == 0) {
+    		return Result.error(CodeMsg.FAIL, "删除失败");
+    	}
+    	
+    	return Result.success(CodeMsg.SUCCESS,"删除成功");
+    }
 }
