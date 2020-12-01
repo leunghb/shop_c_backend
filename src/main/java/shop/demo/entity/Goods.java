@@ -8,9 +8,9 @@ import java.util.Objects;
 /*商品*/
 public class Goods extends Common {
     private String goodsId;
-    private BigDecimal goodsTypeId;
+    private Integer goodsTypeId;
     private BigDecimal originalPrice;
-    private Integer discountPrice;
+    private BigDecimal discountPrice;
     private String cover;
     private String mainTitle;
     private String subTitle;
@@ -29,11 +29,11 @@ public class Goods extends Common {
         this.goodsId = goodsId;
     }
 
-    public BigDecimal getGoodsTypeId() {
+    public Integer getGoodsTypeId() {
         return goodsTypeId;
     }
 
-    public void setGoodsTypeId(BigDecimal goodsTypeId) {
+    public void setGoodsTypeId(Integer goodsTypeId) {
         this.goodsTypeId = goodsTypeId;
     }
 
@@ -45,11 +45,11 @@ public class Goods extends Common {
         this.originalPrice = originalPrice;
     }
 
-    public Integer getDiscountPrice() {
+    public BigDecimal getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(Integer discountPrice) {
+    public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
     }
 
@@ -85,6 +85,22 @@ public class Goods extends Common {
         this.content = content;
     }
 
+    public String getSpecList() {
+        return specList;
+    }
+
+    public void setSpecList(String specList) {
+        this.specList = specList;
+    }
+
+    public Integer getCollectNumber() {
+        return collectNumber;
+    }
+
+    public void setCollectNumber(Integer collectNumber) {
+        this.collectNumber = collectNumber;
+    }
+
     public Integer getSalesVolume() {
         return salesVolume;
     }
@@ -107,22 +123,6 @@ public class Goods extends Common {
 
     public void setStock(Integer stock) {
         this.stock = stock;
-    }
-
-    public Integer getCollectNumber() {
-        return collectNumber;
-    }
-
-    public void setCollectNumber(Integer collectNumber) {
-        this.collectNumber = collectNumber;
-    }
-
-    public String getSku() {
-        return specList;
-    }
-
-    public void setSku(String specList) {
-        this.specList = specList;
     }
 
     @Override

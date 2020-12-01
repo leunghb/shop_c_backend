@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getCartOneGoods" resultType="shop.demo.entity.Cart">
-        select id, goodsSpecsId, goodsId, number, createdAt, updatedAt from cart where account = #{account} and
+        select cartId, goodsSpecsId, goodsId, number, createdAt, updatedAt from cart where account = #{account} and
         goodsSpecsId = #{goodsSpecsId} and goodsId = #{goodsId};
     </select>
 

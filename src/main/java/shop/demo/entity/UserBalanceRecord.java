@@ -2,13 +2,14 @@ package shop.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
 /*用户余额使用记录*/
 public class UserBalanceRecord extends Common {
     private Integer useType;
-    private Integer useAmount;
+    private BigDecimal useAmount;
     private String orderId;
 
     public Integer getUseType() {
@@ -19,11 +20,11 @@ public class UserBalanceRecord extends Common {
         this.useType = useType;
     }
 
-    public Integer getUseAmount() {
+    public BigDecimal getUseAmount() {
         return useAmount;
     }
 
-    public void setUseAmount(Integer useAmount) {
+    public void setUseAmount(BigDecimal useAmount) {
         this.useAmount = useAmount;
     }
 
@@ -41,9 +42,9 @@ public class UserBalanceRecord extends Common {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         UserBalanceRecord that = (UserBalanceRecord) o;
-        return useType == that.useType &&
-                useAmount == that.useAmount &&
-                orderId == that.orderId;
+        return Objects.equals(useType, that.useType) &&
+                Objects.equals(useAmount, that.useAmount) &&
+                Objects.equals(orderId, that.orderId);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class UserBalanceRecord extends Common {
         return "UserBalanceRecord{" +
                 "useType=" + useType +
                 ", useAmount=" + useAmount +
-                ", orderId=" + orderId +
+                ", orderId='" + orderId + '\'' +
                 '}';
     }
 }

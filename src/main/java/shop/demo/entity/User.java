@@ -2,13 +2,14 @@ package shop.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
 /*用户基础信息*/
 public class User extends Common {
     private String password;
-    private Integer balance;
+    private BigDecimal balance;
 
     public String getPassword() {
         return password;
@@ -18,11 +19,11 @@ public class User extends Common {
         this.password = password;
     }
 
-    public Integer getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

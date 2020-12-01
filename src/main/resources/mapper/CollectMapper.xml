@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.demo.mapper.CollectMapper">
+    <insert id="addCollectGoods">
+        insert into collect (account, goodsId) values (#{account}, #{goodsId});
+    </insert>
+
+    <select id="hasCollectGoods" resultType="shop.demo.entity.Collect">
+        select id from collect where account = #{account} and goodsId = #{goodsId} limit 1;
+    </select>
+
+    <delete id="delCollectGoods">
+        delete from collect where account = #{account} and goodsId = #{goodsId} limit 1;
+    </delete>
+</mapper>
