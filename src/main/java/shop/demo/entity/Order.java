@@ -9,7 +9,8 @@ public class Order extends Common {
     private Integer addressId;
     private Integer orderStatus;
     private BigDecimal totalPrice;
-    private String cartId;
+    private String info;
+    private Integer paymentLimitTime;
 
     public String getOrderId() {
         return orderId;
@@ -43,12 +44,20 @@ public class Order extends Common {
         this.totalPrice = totalPrice;
     }
 
-    public String getCartId() {
-        return cartId;
+    public String getInfo() {
+        return info;
     }
 
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Integer getPaymentLimitTime() {
+        return paymentLimitTime;
+    }
+
+    public void setPaymentLimitTime(Integer paymentLimitTime) {
+        this.paymentLimitTime = paymentLimitTime;
     }
 
     @Override
@@ -61,12 +70,13 @@ public class Order extends Common {
                 Objects.equals(addressId, order.addressId) &&
                 Objects.equals(orderStatus, order.orderStatus) &&
                 Objects.equals(totalPrice, order.totalPrice) &&
-                Objects.equals(cartId, order.cartId);
+                Objects.equals(info, order.info) &&
+                Objects.equals(paymentLimitTime, order.paymentLimitTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, cartId);
+        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime);
     }
 
     @Override
@@ -76,7 +86,8 @@ public class Order extends Common {
                 ", addressId=" + addressId +
                 ", orderStatus=" + orderStatus +
                 ", totalPrice=" + totalPrice +
-                ", cartId=" + cartId +
+                ", info='" + info + '\'' +
+                ", paymentLimitTime=" + paymentLimitTime +
                 '}';
     }
 }

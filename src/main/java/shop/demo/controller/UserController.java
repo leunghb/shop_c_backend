@@ -1,5 +1,7 @@
 package shop.demo.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import shop.demo.config.UserLoginToken;
 import shop.demo.entity.*;
 import shop.demo.service.MailService;
+import shop.demo.service.OrderService;
 import shop.demo.service.UserService;
 import shop.demo.service.VerifyCodeService;
 import shop.demo.utils.Md5;
@@ -16,6 +19,7 @@ import shop.demo.utils.TokenUtil;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -26,6 +30,10 @@ public class UserController {
     private VerifyCodeService verifyCodeService;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+    @Autowired
+    private OrderService orderService;
 
     /**
      * 获取所有用户
@@ -41,6 +49,7 @@ public class UserController {
      *
      * @param account * string 账号
      */
+    @UserLoginToken
     @PostMapping("user/getUserByAccount")
     public Result<User> getUserByAccount(@RequestParam String account) {
         User user = userService.getUserByAccount(account);
@@ -200,12 +209,48 @@ public class UserController {
      * @param account * string 账号
      */
     @UserLoginToken
-    @PostMapping("user/getUserBalanceRecord")
-    public Result<Object> getUserBalanceRecord(@RequestParam String account) {
+    @GetMapping("user/getUserBalanceRecord")
+    public Result<Object> getUserBalanceRecord() {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
         if (account == null) {
             return Result.error(CodeMsg.NOT_FIND_DATA, "缺少账号");
         }
         List<UserBalanceRecord> records = userService.getUserBalanceRecord(account);
         return Result.success(records);
+    }
+
+    /**
+     * 获取用户余额
+     *
+     * @param account * string 账号
+     */
+    @UserLoginToken
+    @GetMapping("user/getUserBalance")
+    public Integer getUserBalance() {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        Integer balance = userService.getUserBalance(account);
+        return balance;
+    }
+
+    /**
+     * 支付 （扣除余额、生成消费记录、扣除库存）
+     *
+     * @param account * string 账号
+     * @param orderId * string 订单id
+     */
+    @UserLoginToken
+    @PostMapping("user/pay")
+    public Result<Object> pay(@RequestParam String orderId) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        Order order = orderService.getOrder(account, orderId);
+        JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            int goodsSpecsId = (int) jsonObject.get("goodsSpecsId");
+            int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
+            String goodsId = (String) jsonObject.get("goodsId");
+        }
+
+        return Result.success();
     }
 }

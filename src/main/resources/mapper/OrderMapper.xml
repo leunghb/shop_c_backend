@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.OrderMapper">
     <insert id="addOrder">
-        insert into orders (orderId, account, addressId, totalPrice, cartId) values (#{orderId}, #{account},
-        #{addressId}, #{totalPrice}, #{cartId});
+        insert into orders (orderId, account, addressId, totalPrice, info, paymentLimitTime) values (#{orderId}, #{account},
+        #{addressId}, #{totalPrice}, #{info}, #{paymentLimitTime});
     </insert>
+
+    <select id="getOrder" resultType="shop.demo.entity.Order">
+        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, createdAt, updatedAt from orders
+        where
+         account = #{account} and orderId = #{orderId} limit 1;
+    </select>
 </mapper>

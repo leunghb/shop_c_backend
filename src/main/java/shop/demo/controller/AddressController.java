@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.demo.config.UserLoginToken;
 import shop.demo.entity.Address;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Result;
@@ -25,6 +26,7 @@ public class AddressController {
     /**
      * 获取用户所有地址
      */
+    @UserLoginToken
     @GetMapping("user/getAddressList")
     public Result<Object> getAddressList() {
         String account = TokenUtil.getJwtToken(httpServletRequest);
@@ -43,6 +45,7 @@ public class AddressController {
      * @param type      * int 0-添加 1-修改
      * @param id        int 地址id
      */
+    @UserLoginToken
     @PostMapping("user/addOrPutAddress")
     public Result<Object> addAddress(@RequestParam String name,
                                      @RequestParam String tel,
@@ -81,6 +84,7 @@ public class AddressController {
      * @param account * String
      * @param id      * int 地址id
      */
+    @UserLoginToken
     @PostMapping("user/delAddress")
     public Result<Object> delAddress(@RequestParam Integer id) {
         String account = TokenUtil.getJwtToken(httpServletRequest);

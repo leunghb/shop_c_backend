@@ -38,4 +38,8 @@ public class UserService {
     public List<UserBalanceRecord> getUserBalanceRecord(String account) {
         return userMapper.getUserBalanceRecord(account);
     }
+
+    public Integer getUserBalance(String account) {
+        return userMapper.getUserBalance(account);
+    }
 }

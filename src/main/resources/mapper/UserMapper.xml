@@ -26,4 +26,8 @@
         select account,useType,useAmount,orderId,createdAt,updatedAt from user_balance_record where account =
         #{account};
     </select>
+    
+    <select id="getUserBalance" resultType="Integer">
+        select balance from user where account = #{account} limit 1;
+    </select>
 </mapper>

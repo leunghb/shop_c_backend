@@ -20,4 +20,6 @@ public interface UserMapper {
     int putUserPwdByAccount(String account, String password);
 
     List<UserBalanceRecord> getUserBalanceRecord(String account);
+
+    Integer getUserBalance(String account);
 }

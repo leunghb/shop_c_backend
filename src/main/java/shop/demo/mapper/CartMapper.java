@@ -14,6 +14,8 @@ public interface CartMapper {
     int putCartOneGoods(String account, int goodsSpecsId, String goodsId, int number);
 
     List<Object> getCartList(String account, int limit, int page);
-    
+
     int delCartOneGoods(String account, int cartId);
+
+    int putCartGoodsNumber(int cartId, int number);
 }

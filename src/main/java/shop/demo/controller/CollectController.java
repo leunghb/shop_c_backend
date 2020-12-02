@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.demo.config.UserLoginToken;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Collect;
 import shop.demo.entity.Result;
@@ -25,6 +26,7 @@ public class CollectController {
      *
      * @param goodsId * String 商品id
      */
+    @UserLoginToken
     @PostMapping("goods/addOrDelCollectGoods")
     public Result<Object> addOrDelCollectGoods(@RequestParam String goodsId) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
@@ -50,6 +52,7 @@ public class CollectController {
      *
      * @param goodsId * String 商品id
      */
+    @UserLoginToken
     @PostMapping("goods/hasCollectGoods")
     public Result<Object> hasCollectGoods(@RequestParam String goodsId) {
         String account = TokenUtil.getJwtToken(httpServletRequest);

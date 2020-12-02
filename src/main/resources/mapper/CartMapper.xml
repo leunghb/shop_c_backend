@@ -22,10 +22,16 @@
         g.cover,
         g.mainTitle, g.subTitle
         from cart c, goods_specs gs, goods g
-        where c.goodsSpecsId = gs.id and c.goodsId = g.goodsId order by updatedAt desc limit #{limit} offset #{page};
+        where c.goodsSpecsId = gs.id and c.goodsId = g.goodsId and c.number != 0 order by c.createdAt desc limit
+        #{limit}
+        offset #{page};
     </select>
-    
+
     <delete id="delCartOneGoods">
     	delete from cart where account = #{account} and cartId = #{cartId} limit 1;
     </delete>
+
+    <update id="putCartGoodsNumber">
+        update cart set number = number - #{number} where cartId = #{cartId} limit 1;
+    </update>
 </mapper>

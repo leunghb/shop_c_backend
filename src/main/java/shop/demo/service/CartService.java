@@ -29,8 +29,12 @@ public class CartService {
     public List<Object> getCartList(String account, int limit, int page) {
         return cartMapper.getCartList(account, limit, page);
     }
-    
+
     public int delCartOneGoods(String account, int cartId) {
-    	return cartMapper.delCartOneGoods(account, cartId);
+        return cartMapper.delCartOneGoods(account, cartId);
+    }
+
+    public int putCartGoodsNumber(int cartId, int number) {
+        return cartMapper.putCartGoodsNumber(cartId, number);
     }
 }

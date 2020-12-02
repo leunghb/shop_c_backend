@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.demo.config.UserLoginToken;
 import shop.demo.entity.Cart;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Result;
@@ -31,6 +32,7 @@ public class CartController {
      * @param skuDesc      String 规格描述
      * @param skuCover     String 规格单品图片
      */
+    @UserLoginToken
     @PostMapping("cart/addGoodsToCart")
     public Result<Object> addGoodsToCart(@RequestParam Integer goodsSpecsId, @RequestParam String goodsId,
                                          @RequestParam Integer number,
@@ -63,6 +65,7 @@ public class CartController {
      * @param limit int 每页数目
      * @param page  int 页数
      */
+    @UserLoginToken
     @PostMapping("cart/getCartList")
     public Result<Object> getCartList(@RequestParam(required = false, defaultValue = "10") int limit,
                                       @RequestParam(required = false, defaultValue = "1") int page) {
@@ -71,24 +74,25 @@ public class CartController {
         List<Object> list = (List<Object>) cartService.getCartList(account, limit, page);
         return Result.success(list);
     }
-    
+
     /**
      * 删除购物车商品
-     * 
+     *
      * @param cartId * int 购物车cartId
      */
+    @UserLoginToken
     @PostMapping("cart/delCartOneGoods")
     public Result<Object> delCartOneGoods(@RequestParam Integer cartId) {
-    	String account = TokenUtil.getJwtToken(httpServletRequest);
-    	if(cartId == null) {
-    		return Result.error(CodeMsg.PARAMETER_ISNULL);
-    	}
-    	int row = cartService.delCartOneGoods(account, cartId);
-    	
-    	if(row == 0) {
-    		return Result.error(CodeMsg.FAIL, "删除失败");
-    	}
-    	
-    	return Result.success(CodeMsg.SUCCESS,"删除成功");
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        if (cartId == null) {
+            return Result.error(CodeMsg.PARAMETER_ISNULL);
+        }
+        int row = cartService.delCartOneGoods(account, cartId);
+
+        if (row == 0) {
+            return Result.error(CodeMsg.FAIL, "删除失败");
+        }
+
+        return Result.success(CodeMsg.SUCCESS, "删除成功");
     }
 }
