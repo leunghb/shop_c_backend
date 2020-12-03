@@ -17,4 +17,6 @@ public interface GoodsMapper {
     List<Goods> getHotGoods(int num);
 
     Goods getGoodsDetail(String goodsId);
+
+    int putGoodsStock(String goodsId, int stock);
 }

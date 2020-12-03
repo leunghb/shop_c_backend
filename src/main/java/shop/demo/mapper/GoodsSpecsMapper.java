@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface GoodsSpecsMapper {
     List<GoodsSpecs> getGoodsSpecsByGoodsId(String goodsId);
+
+    int putGoodsSpecsStock(int id, int stock);
 }

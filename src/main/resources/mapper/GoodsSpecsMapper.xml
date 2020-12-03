@@ -4,4 +4,8 @@
     <select id="getGoodsSpecsByGoodsId" resultType="shop.demo.entity.GoodsSpecs">
         select id,goodsId,specs,stock,price,createdAt from goods_specs where goodsId = #{goodsId};
     </select>
+
+    <update id="putGoodsSpecsStock">
+        update goods_specs set stock = stock - #{stock} where id = #{id} limit 1;
+    </update>
 </mapper>

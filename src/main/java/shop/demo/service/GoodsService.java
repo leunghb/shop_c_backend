@@ -31,4 +31,8 @@ public class GoodsService {
     public Goods getGoodsDetail(String goodsId) {
         return goodsMapper.getGoodsDetail(goodsId);
     }
+
+    public int putGoodsStock(String goodsId, int stock) {
+        return goodsMapper.putGoodsStock(goodsId, stock);
+    }
 }

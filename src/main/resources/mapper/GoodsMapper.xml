@@ -32,4 +32,8 @@
         id,goodsId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList,collectNumber
         from goods where goodsId = #{goodsId};
     </select>
+
+    <update id="putGoodsStock">
+        update goods set stock = stock - #{stock} where goodsId = #{goodsId} limit 1;
+    </update>
 </mapper>

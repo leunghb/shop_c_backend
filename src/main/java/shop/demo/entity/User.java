@@ -10,6 +10,8 @@ import java.util.Objects;
 public class User extends Common {
     private String password;
     private BigDecimal balance;
+    private String avatar;
+    private String name;
 
     public String getPassword() {
         return password;
@@ -27,18 +29,37 @@ public class User extends Common {
         this.balance = balance;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
-        return balance == user.balance &&
-                Objects.equals(password, user.password);
+        return Objects.equals(password, user.password) &&
+                Objects.equals(balance, user.balance) &&
+                Objects.equals(avatar, user.avatar) &&
+                Objects.equals(name, user.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(password, balance);
+        return Objects.hash(super.hashCode(), password, balance, avatar, name);
     }
 
     @Override
@@ -46,6 +67,8 @@ public class User extends Common {
         return "User{" +
                 "password='" + password + '\'' +
                 ", balance=" + balance +
+                ", avatar='" + avatar + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

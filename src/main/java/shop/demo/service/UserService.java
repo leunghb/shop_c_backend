@@ -7,6 +7,7 @@ import shop.demo.entity.User;
 import shop.demo.entity.UserBalanceRecord;
 import shop.demo.mapper.UserMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Transactional
@@ -39,7 +40,15 @@ public class UserService {
         return userMapper.getUserBalanceRecord(account);
     }
 
-    public Integer getUserBalance(String account) {
+    public BigDecimal getUserBalance(String account) {
         return userMapper.getUserBalance(account);
+    }
+
+    public int putUserBalance(String account, BigDecimal balance) {
+        return userMapper.putUserBalance(account, balance);
+    }
+
+    public int putUserAvatarOrName(String account, String avatar, String name) {
+        return userMapper.putUserAvatarOrName(account, avatar, name);
     }
 }

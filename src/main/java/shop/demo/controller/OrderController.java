@@ -38,6 +38,7 @@ public class OrderController {
      * 生成订单
      *
      * @param paymentLimitTime int 支付限制时间（分钟）超过则自动关闭 默认60分钟
+     * @param type             * int 下单方式 0-直接下单 1-购物车下单
      * @Param orderId * String  订单id
      * @Param account * String  账号
      * @Param addressId * int  地址表id
@@ -49,25 +50,29 @@ public class OrderController {
     @PostMapping("order/addOrder")
     public Result<Object> addOrder(@RequestParam Integer addressId,
                                    @RequestParam BigDecimal totalPrice, @RequestParam String info,
-                                   @RequestParam(required = false, defaultValue = "60") Integer paymentLimitTime) {
+                                   @RequestParam(required = false, defaultValue = "60") Integer paymentLimitTime,
+                                   @RequestParam Integer type) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         String orderId = Uuid.uuid();
-
-        int cartId = 0, number = 0;
-        JSONArray jsonArray = JSONObject.parseArray(info);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonObject);
-            cartId = (int) jsonObject.get("cartId");
-            number = (int) jsonObject.get("numberOfpurchases");
-        }
 
         int row = orderService.addOrder(orderId, account, addressId, totalPrice, info, paymentLimitTime);
         if (row == 0) {
             return Result.error(CodeMsg.FAIL, "订单生成失败");
         }
-        //生成订单后减少购物车对应商品添加数目
-        cartService.putCartGoodsNumber(cartId, number);
+
+        if (type == 1) {
+            int cartId = 0, number = 0;
+            JSONArray jsonArray = JSONObject.parseArray(info);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                System.out.println(jsonObject);
+                cartId = (int) jsonObject.get("cartId");
+                number = (int) jsonObject.get("numberOfpurchases");
+            }
+            //生成订单后减少购物车对应商品添加数目
+            cartService.putCartGoodsNumber(cartId, number);
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
         return Result.success(map);

@@ -17,4 +17,8 @@ public class GoodsSpecsService {
     public List<GoodsSpecs> getGoodsSpecs(String goodsId) {
         return goodsSpecsMapper.getGoodsSpecsByGoodsId(goodsId);
     }
+
+    public int putGoodsSpecsStock(int id, int stock) {
+        return goodsSpecsMapper.putGoodsSpecsStock(id, stock);
+    }
 }

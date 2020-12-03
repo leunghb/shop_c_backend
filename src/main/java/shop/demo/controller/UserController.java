@@ -3,22 +3,26 @@ package shop.demo.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.multipart.MultipartFile;
 import shop.demo.config.UserLoginToken;
 import shop.demo.entity.*;
-import shop.demo.service.MailService;
-import shop.demo.service.OrderService;
-import shop.demo.service.UserService;
-import shop.demo.service.VerifyCodeService;
+import shop.demo.service.*;
 import shop.demo.utils.Md5;
 import shop.demo.utils.TokenUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,6 +38,12 @@ public class UserController {
     private HttpServletRequest httpServletRequest;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserBalanceRecordService userBalanceRecordService;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private GoodsSpecsService goodsSpecsService;
 
     /**
      * 获取所有用户
@@ -49,9 +59,19 @@ public class UserController {
      *
      * @param account * string 账号
      */
-    @UserLoginToken
     @PostMapping("user/getUserByAccount")
     public Result<User> getUserByAccount(@RequestParam String account) {
+        User user = userService.getUserByAccount(account);
+        if (user == null) {
+            return Result.error(CodeMsg.NOT_FIND_DATA);
+        }
+        return Result.success(user);
+    }
+
+    @UserLoginToken
+    @GetMapping("user/getUserInfo")
+    public Result<User> getUserInfo() {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
         User user = userService.getUserByAccount(account);
         if (user == null) {
             return Result.error(CodeMsg.NOT_FIND_DATA);
@@ -226,9 +246,9 @@ public class UserController {
      */
     @UserLoginToken
     @GetMapping("user/getUserBalance")
-    public Integer getUserBalance() {
+    public BigDecimal getUserBalance() {
         String account = TokenUtil.getJwtToken(httpServletRequest);
-        Integer balance = userService.getUserBalance(account);
+        BigDecimal balance = userService.getUserBalance(account);
         return balance;
     }
 
@@ -243,14 +263,34 @@ public class UserController {
     public Result<Object> pay(@RequestParam String orderId) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         Order order = orderService.getOrder(account, orderId);
+        BigDecimal totalPrice = order.getTotalPrice();
         JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             int goodsSpecsId = (int) jsonObject.get("goodsSpecsId");
             int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
             String goodsId = (String) jsonObject.get("goodsId");
+            userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
+            userService.putUserBalance(account, totalPrice); //扣除用户余额
+            goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
+            goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases);
         }
 
+        return Result.success();
+    }
+
+    /**
+     * 更新用户头像、名称
+     *
+     * @param avatar string 头像
+     * @param name   string 名称
+     */
+    @UserLoginToken
+    @PostMapping("user/putUserAvatarOrName")
+    public Result<Object> putUserAvatarOrName(@RequestParam(required = false, defaultValue = "") String avatar,
+                                              @RequestParam(required = false, defaultValue = "") String name) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        int row = userService.putUserAvatarOrName(account, avatar, name);
         return Result.success();
     }
 }
