@@ -7,8 +7,30 @@
     </insert>
 
     <select id="getOrder" resultType="shop.demo.entity.Order">
-        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, createdAt, updatedAt from orders
+        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, createdAt,
+        updatedAt from
+        orders
         where
          account = #{account} and orderId = #{orderId} limit 1;
+    </select>
+
+    <update id="putOrderStatus">
+        update orders set orderStatus = #{orderStatus} where account = #{account} and orderId = #{orderId} limit 1;
+    </update>
+
+    <select id="getOrderList" resultType="shop.demo.entity.Order">
+        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, createdAt,
+        updatedAt from orders
+        <where>
+            <if test="orderStatus != null">
+                orderStatus = #{orderStatus}
+            </if>
+            and account = #{account}
+        </where>
+        order by updatedAt desc
+        <if test="limit != null and page != null">
+            limit #{limit} offset #{page}
+        </if>
+        ;
     </select>
 </mapper>

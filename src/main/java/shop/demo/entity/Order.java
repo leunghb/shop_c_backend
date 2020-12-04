@@ -11,6 +11,7 @@ public class Order extends Common {
     private BigDecimal totalPrice;
     private String info;
     private Integer paymentLimitTime;
+    private Integer closeLimitTime;
 
     public String getOrderId() {
         return orderId;
@@ -60,6 +61,14 @@ public class Order extends Common {
         this.paymentLimitTime = paymentLimitTime;
     }
 
+    public Integer getCloseLimitTime() {
+        return closeLimitTime;
+    }
+
+    public void setCloseLimitTime(Integer closeLimitTime) {
+        this.closeLimitTime = closeLimitTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,12 +80,13 @@ public class Order extends Common {
                 Objects.equals(orderStatus, order.orderStatus) &&
                 Objects.equals(totalPrice, order.totalPrice) &&
                 Objects.equals(info, order.info) &&
-                Objects.equals(paymentLimitTime, order.paymentLimitTime);
+                Objects.equals(paymentLimitTime, order.paymentLimitTime) &&
+                Objects.equals(closeLimitTime, order.closeLimitTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime);
+        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime);
     }
 
     @Override
@@ -88,6 +98,7 @@ public class Order extends Common {
                 ", totalPrice=" + totalPrice +
                 ", info='" + info + '\'' +
                 ", paymentLimitTime=" + paymentLimitTime +
+                ", closeLimitTime=" + closeLimitTime +
                 '}';
     }
 }

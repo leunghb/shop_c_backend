@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.demo.config.UserLoginToken;
 import shop.demo.entity.CodeMsg;
+import shop.demo.entity.Order;
 import shop.demo.entity.Result;
 import shop.demo.service.CartService;
 import shop.demo.service.OrderService;
@@ -39,10 +40,11 @@ public class OrderController {
      *
      * @param paymentLimitTime int 支付限制时间（分钟）超过则自动关闭 默认60分钟
      * @param type             * int 下单方式 0-直接下单 1-购物车下单
+     * @param closeLimitTime   int 订单关闭时间（分钟），超过即自动完成 默认720分钟
      * @Param orderId * String  订单id
      * @Param account * String  账号
      * @Param addressId * int  地址表id
-     * @Param orderStatus * int  订单状态 0-未支付 1-已支付 2-已取消 3-交易完成 4-退款中 5-退货退款中 6-退款完成 7-退货退款完成
+     * @Param orderStatus * int  订单状态 0-未支付 1-已支付 2-已取消 3-交易完成
      * @Param totalPrice * BigDecimal  总金额
      * @Param info * String  订单商品具体信息
      */
@@ -51,7 +53,8 @@ public class OrderController {
     public Result<Object> addOrder(@RequestParam Integer addressId,
                                    @RequestParam BigDecimal totalPrice, @RequestParam String info,
                                    @RequestParam(required = false, defaultValue = "60") Integer paymentLimitTime,
-                                   @RequestParam Integer type) {
+                                   @RequestParam Integer type,
+                                   @RequestParam(required = false, defaultValue = "720") Integer closeLimitTime) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         String orderId = Uuid.uuid();
 
@@ -76,5 +79,39 @@ public class OrderController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
         return Result.success(map);
+    }
+
+    /**
+     * 订单列表
+     *
+     * @param account     * string
+     * @param orderStatus int 订单状态 0-未支付 1-已支付 2-交易完成 3-已取消
+     * @param limit       int
+     * @param page        int
+     */
+    @UserLoginToken
+    @PostMapping("order/getOrderList")
+    public Result<Object> getOrderList(@RequestParam(required = false, defaultValue = "") Integer orderStatus,
+                                       @RequestParam(required = false, defaultValue = "") Integer limit,
+                                       @RequestParam(required = false, defaultValue = "") Integer page) {
+        if (page != null) {
+            page = (page - 1) * limit;
+        }
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        List<Order> list = orderService.getOrderList(account, orderStatus, limit, page);
+        return Result.success(list);
+    }
+
+    /**
+     * 订单详情
+     *
+     * @param orderId * string
+     */
+    @UserLoginToken
+    @PostMapping("order/getOrderDetail")
+    public Result<Object> getOrderDetail(@RequestParam String orderId) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        Order order = orderService.getOrder(account, orderId);
+        return Result.success(order);
     }
 }

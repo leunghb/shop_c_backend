@@ -7,6 +7,7 @@ import shop.demo.entity.Order;
 import shop.demo.mapper.OrderMapper;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Transactional
 @Service
@@ -21,5 +22,13 @@ public class OrderService {
 
     public Order getOrder(String account, String orderId) {
         return orderMapper.getOrder(account, orderId);
+    }
+
+    public int putOrderStatus(String account, String orderId, Integer orderStatus) {
+        return orderMapper.putOrderStatus(account, orderId, orderStatus);
+    }
+
+    public List<Order> getOrderList(String account, Integer orderStatus, Integer limit, Integer page) {
+        return orderMapper.getOrderList(account, orderStatus, limit, page);
     }
 }

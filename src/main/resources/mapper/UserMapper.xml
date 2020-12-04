@@ -24,7 +24,7 @@
     <select id="getUserBalanceRecord" parameterType="shop.demo.entity.UserBalanceRecord"
             resultType="shop.demo.entity.UserBalanceRecord">
         select account,useType,useAmount,orderId,createdAt,updatedAt from user_balance_record where account =
-        #{account};
+        #{account} order by createdAt desc;
     </select>
 
     <select id="getUserBalance" resultType="java.math.BigDecimal">

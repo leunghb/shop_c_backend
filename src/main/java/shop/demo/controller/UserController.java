@@ -3,13 +3,11 @@ package shop.demo.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.multipart.MultipartFile;
 import shop.demo.config.UserLoginToken;
 import shop.demo.entity.*;
 import shop.demo.service.*;
@@ -253,7 +251,7 @@ public class UserController {
     }
 
     /**
-     * 支付 （扣除余额、生成消费记录、扣除库存）
+     * 支付 （扣除余额、生成消费记录、扣除库存, 订单状态）
      *
      * @param account * string 账号
      * @param orderId * string 订单id
@@ -262,7 +260,14 @@ public class UserController {
     @PostMapping("user/pay")
     public Result<Object> pay(@RequestParam String orderId) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
+
         Order order = orderService.getOrder(account, orderId);
+        BigDecimal orderPrice = order.getTotalPrice();
+        BigDecimal userBalance = userService.getUserBalance(account);
+        if (userBalance.compareTo(orderPrice) == -1) {
+            return Result.error(CodeMsg.FAIL, "余额不足");
+        }
+
         BigDecimal totalPrice = order.getTotalPrice();
         JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -272,6 +277,7 @@ public class UserController {
             String goodsId = (String) jsonObject.get("goodsId");
             userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
             userService.putUserBalance(account, totalPrice); //扣除用户余额
+            orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
             goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
             goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases);
         }
