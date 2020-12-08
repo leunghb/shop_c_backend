@@ -7,7 +7,8 @@
     </insert>
 
     <select id="getOrder" resultType="shop.demo.entity.Order">
-        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, createdAt,
+        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
+        createdAt,
         updatedAt from
         orders
         where
@@ -15,11 +16,17 @@
     </select>
 
     <update id="putOrderStatus">
-        update orders set orderStatus = #{orderStatus} where account = #{account} and orderId = #{orderId} limit 1;
+        update orders set orderStatus = #{orderStatus}
+        <if test="orderStatus == 1">, payTime = CURRENT_TIMESTAMP()</if>
+        where
+        account = #{account}
+        and orderId = #{orderId}
+        limit 1;
     </update>
 
     <select id="getOrderList" resultType="shop.demo.entity.Order">
-        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, createdAt,
+        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
+        createdAt,
         updatedAt from orders
         <where>
             <if test="orderStatus != null">

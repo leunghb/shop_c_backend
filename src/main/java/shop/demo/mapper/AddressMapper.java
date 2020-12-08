@@ -16,4 +16,6 @@ public interface AddressMapper {
     int putAddress(String account, String name, String tel, String address, int isDefault, int id);
 
     int delAddress(String account, int id);
+
+    Address getAddress(String account, int id);
 }

@@ -33,4 +33,8 @@ public class AddressService {
     public int delAddress(String account, int id) {
         return addressMapper.delAddress(account, id);
     }
+
+    public Address getAddress(String account, int id) {
+        return addressMapper.getAddress(account, id);
+    }
 }

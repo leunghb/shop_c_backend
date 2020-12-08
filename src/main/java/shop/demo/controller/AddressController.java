@@ -37,7 +37,6 @@ public class AddressController {
     /**
      * 添加或更新用户地址
      *
-     * @param account   * String
      * @param name      * String 姓名
      * @param tel       * String 电话
      * @param address   * String 地址
@@ -81,7 +80,6 @@ public class AddressController {
     /**
      * 删除地址
      *
-     * @param account * String
      * @param id      * int 地址id
      */
     @UserLoginToken
@@ -96,5 +94,21 @@ public class AddressController {
             return Result.error(CodeMsg.FAIL, "删除失败");
         }
         return Result.success(CodeMsg.SUCCESS, "删除成功");
+    }
+
+    /**
+     * 获取单个地址
+     *
+     * @param id * int 地址id
+     */
+    @UserLoginToken
+    @PostMapping("user/getAddress")
+    public Result<Object> getAddress(@RequestParam Integer id) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        if (id == null) {
+            return Result.error(CodeMsg.PARAMETER_ISNULL);
+        }
+        Address address = addressService.getAddress(account, id);
+        return Result.success(address);
     }
 }

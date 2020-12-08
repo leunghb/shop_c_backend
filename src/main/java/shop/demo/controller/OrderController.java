@@ -1,9 +1,9 @@
 package shop.demo.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,29 +11,31 @@ import shop.demo.config.UserLoginToken;
 import shop.demo.entity.CodeMsg;
 import shop.demo.entity.Order;
 import shop.demo.entity.Result;
-import shop.demo.service.CartService;
-import shop.demo.service.OrderService;
+import shop.demo.service.*;
 import shop.demo.utils.TokenUtil;
 import shop.demo.utils.Uuid;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class OrderController {
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private HttpServletRequest httpServletRequest;
-
     @Autowired
     private CartService cartService;
+    @Autowired
+    private UserBalanceRecordService userBalanceRecordService;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private GoodsSpecsService goodsSpecsService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 生成订单
@@ -113,5 +115,64 @@ public class OrderController {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         Order order = orderService.getOrder(account, orderId);
         return Result.success(order);
+    }
+
+    /**
+     * 支付 （扣除余额、生成消费记录、扣除库存, 订单状态）
+     *
+     * @param account * string 账号
+     * @param orderId * string 订单id
+     */
+    @UserLoginToken
+    @PostMapping("order/pay")
+    public Result<Object> pay(@RequestParam String orderId) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+
+        Order order = orderService.getOrder(account, orderId);
+        BigDecimal orderPrice = order.getTotalPrice();
+        BigDecimal userBalance = userService.getUserBalance(account);
+        if (userBalance.compareTo(orderPrice) == -1) {
+            return Result.error(CodeMsg.FAIL, "余额不足");
+        }
+
+        BigDecimal totalPrice = order.getTotalPrice();
+        JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            int goodsSpecsId = (int) jsonObject.get("goodsSpecsId");
+            int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
+            String goodsId = (String) jsonObject.get("goodsId");
+            userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
+            userService.putUserBalance(account, totalPrice); //扣除用户余额
+            orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
+            goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
+            goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases);
+        }
+
+        return Result.success();
+    }
+
+    /**
+     * 修改订单状态
+     *
+     * @param type    * String (cancelOrder、closeOrder)
+     * @param orderId * String
+     */
+    @UserLoginToken
+    @PostMapping({"order/putOrderStatus/{type}"})
+    public Result<Object> putOrderStatus(@PathVariable String type, @RequestParam String orderId) {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+
+        Integer orderStatus = 0;
+        if (type.equals("cancelOrder")) {
+            orderStatus = 3;
+        } else if (type.equals("closeOrder")) {
+            orderStatus = 2;
+        }
+        int row = orderService.putOrderStatus(account, orderId, orderStatus);
+        if (row == 0) {
+            return Result.error(CodeMsg.FAIL, "订单状态修改失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "订单状态修改成功");
     }
 }

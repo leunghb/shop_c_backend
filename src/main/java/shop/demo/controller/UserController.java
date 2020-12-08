@@ -1,7 +1,5 @@
 package shop.demo.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +12,10 @@ import shop.demo.service.*;
 import shop.demo.utils.Md5;
 import shop.demo.utils.TokenUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserController {
@@ -34,14 +27,6 @@ public class UserController {
     private MailService mailService;
     @Autowired
     private HttpServletRequest httpServletRequest;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private UserBalanceRecordService userBalanceRecordService;
-    @Autowired
-    private GoodsService goodsService;
-    @Autowired
-    private GoodsSpecsService goodsSpecsService;
 
     /**
      * 获取所有用户
@@ -248,41 +233,6 @@ public class UserController {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         BigDecimal balance = userService.getUserBalance(account);
         return balance;
-    }
-
-    /**
-     * 支付 （扣除余额、生成消费记录、扣除库存, 订单状态）
-     *
-     * @param account * string 账号
-     * @param orderId * string 订单id
-     */
-    @UserLoginToken
-    @PostMapping("user/pay")
-    public Result<Object> pay(@RequestParam String orderId) {
-        String account = TokenUtil.getJwtToken(httpServletRequest);
-
-        Order order = orderService.getOrder(account, orderId);
-        BigDecimal orderPrice = order.getTotalPrice();
-        BigDecimal userBalance = userService.getUserBalance(account);
-        if (userBalance.compareTo(orderPrice) == -1) {
-            return Result.error(CodeMsg.FAIL, "余额不足");
-        }
-
-        BigDecimal totalPrice = order.getTotalPrice();
-        JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            int goodsSpecsId = (int) jsonObject.get("goodsSpecsId");
-            int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
-            String goodsId = (String) jsonObject.get("goodsId");
-            userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
-            userService.putUserBalance(account, totalPrice); //扣除用户余额
-            orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
-            goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
-            goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases);
-        }
-
-        return Result.success();
     }
 
     /**

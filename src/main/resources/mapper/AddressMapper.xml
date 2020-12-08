@@ -6,6 +6,10 @@
         updatedAt desc limit 6;
     </select>
 
+    <select id="getAddress" resultType="shop.demo.entity.Address">
+        select id,name,tel,address,isDefault,updatedAt from address where account = #{account} and id = #{id};
+    </select>
+
     <insert id="addAddress">
         insert into address (account,name,tel,address,isDefault) values
         (#{account},#{name},#{tel},#{address},#{isDefault});

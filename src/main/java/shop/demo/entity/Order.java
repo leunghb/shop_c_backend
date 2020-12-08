@@ -1,6 +1,7 @@
 package shop.demo.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /*订单*/
@@ -12,6 +13,7 @@ public class Order extends Common {
     private String info;
     private Integer paymentLimitTime;
     private Integer closeLimitTime;
+    private Timestamp payTime;
 
     public String getOrderId() {
         return orderId;
@@ -69,6 +71,14 @@ public class Order extends Common {
         this.closeLimitTime = closeLimitTime;
     }
 
+    public Timestamp getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Timestamp payTime) {
+        this.payTime = payTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,12 +91,13 @@ public class Order extends Common {
                 Objects.equals(totalPrice, order.totalPrice) &&
                 Objects.equals(info, order.info) &&
                 Objects.equals(paymentLimitTime, order.paymentLimitTime) &&
-                Objects.equals(closeLimitTime, order.closeLimitTime);
+                Objects.equals(closeLimitTime, order.closeLimitTime) &&
+                Objects.equals(payTime, order.payTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime);
+        return Objects.hash(super.hashCode(), orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime);
     }
 
     @Override
@@ -99,6 +110,7 @@ public class Order extends Common {
                 ", info='" + info + '\'' +
                 ", paymentLimitTime=" + paymentLimitTime +
                 ", closeLimitTime=" + closeLimitTime +
+                ", payTime=" + payTime +
                 '}';
     }
 }
