@@ -28,6 +28,10 @@ public class OrderService {
         return orderMapper.putOrderStatus(account, orderId, orderStatus);
     }
 
+    public int putOrderAddress(String account, String orderId, Integer addressId) {
+        return orderMapper.putOrderAddress(account, orderId, addressId);
+    }
+
     public List<Order> getOrderList(String account, Integer orderStatus, Integer limit, Integer page) {
         return orderMapper.getOrderList(account, orderStatus, limit, page);
     }

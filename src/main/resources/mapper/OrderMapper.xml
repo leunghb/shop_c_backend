@@ -24,13 +24,29 @@
         limit 1;
     </update>
 
+    <update id="putOrderAddress">
+        update orders set addressId = #{addressId}
+        where
+        account = #{account}
+        and orderId = #{orderId}
+        limit 1;
+    </update>
+
     <select id="getOrderList" resultType="shop.demo.entity.Order">
         select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
         createdAt,
         updatedAt from orders
         <where>
             <if test="orderStatus != null">
-                orderStatus = #{orderStatus}
+                <if test="orderStatus == 0 || orderStatus == 1 || orderStatus == 2">
+                    orderStatus = #{orderStatus}
+                </if>
+                <if test="orderStatus == 3">
+                    orderStatus &gt;= 4 and orderStatus &lt;= 5
+                </if>
+                <if test="orderStatus == 4">
+                    orderStatus &gt;= 6 and orderStatus &lt;= 7
+                </if>
             </if>
             and account = #{account}
         </where>

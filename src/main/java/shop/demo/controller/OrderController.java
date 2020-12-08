@@ -46,7 +46,7 @@ public class OrderController {
      * @Param orderId * String  订单id
      * @Param account * String  账号
      * @Param addressId * int  地址表id
-     * @Param orderStatus * int  订单状态 0-未支付 1-已支付 2-已取消 3-交易完成
+     * @Param orderStatus * int  订单状态 0-未支付 1-已支付 2-交易完成 3-已取消 4-退款中 5-退货退款中 6-已退款 7-已退货退款
      * @Param totalPrice * BigDecimal  总金额
      * @Param info * String  订单商品具体信息
      */
@@ -65,7 +65,7 @@ public class OrderController {
             return Result.error(CodeMsg.FAIL, "订单生成失败");
         }
 
-        if (type == 1) {
+        if (type == 1) { //购物车下单
             int cartId = 0, number = 0;
             JSONArray jsonArray = JSONObject.parseArray(info);
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -87,7 +87,8 @@ public class OrderController {
      * 订单列表
      *
      * @param account     * string
-     * @param orderStatus int 订单状态 0-未支付 1-已支付 2-交易完成 3-已取消
+     * @param orderStatus int null-全部 0-未支付 1-已支付 2-已完成 3-退货/退款中 4-已退货/退款
+     *                        (订单状态 0-未支付 1-已支付 2-交易完成 3-已取消 4-退款中 5-退货退款中 6-已退款 7-已退货退款)
      * @param limit       int
      * @param page        int
      */
@@ -120,19 +121,25 @@ public class OrderController {
     /**
      * 支付 （扣除余额、生成消费记录、扣除库存, 订单状态）
      *
-     * @param account * string 账号
-     * @param orderId * string 订单id
+     * @param orderId   * string 订单id
+     * @param addressId Int 地址id
      */
     @UserLoginToken
     @PostMapping("order/pay")
-    public Result<Object> pay(@RequestParam String orderId) {
+    public Result<Object> pay(@RequestParam String orderId,
+                              @RequestParam(required = false, defaultValue = "") Integer addressId) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
 
         Order order = orderService.getOrder(account, orderId);
         BigDecimal orderPrice = order.getTotalPrice();
+
         BigDecimal userBalance = userService.getUserBalance(account);
         if (userBalance.compareTo(orderPrice) == -1) {
             return Result.error(CodeMsg.FAIL, "余额不足");
+        }
+
+        if (addressId != null && !order.getAddressId().equals(addressId)) {
+            orderService.putOrderAddress(account, orderId, addressId);
         }
 
         BigDecimal totalPrice = order.getTotalPrice();
