@@ -42,7 +42,7 @@ public class OrderController {
      *
      * @param paymentLimitTime int 支付限制时间（分钟）超过则自动关闭 默认60分钟
      * @param type             * int 下单方式 0-直接下单 1-购物车下单
-     * @param closeLimitTime   int 订单关闭时间（分钟），超过即自动完成 默认720分钟
+     * @param closeLimitTime   int 订单关闭（收货）时间（分钟），超过即自动完成 默认720分钟
      * @Param orderId * String  订单id
      * @Param account * String  账号
      * @Param addressId * int  地址表id
@@ -56,7 +56,7 @@ public class OrderController {
                                    @RequestParam BigDecimal totalPrice, @RequestParam String info,
                                    @RequestParam(required = false, defaultValue = "60") Integer paymentLimitTime,
                                    @RequestParam Integer type,
-                                   @RequestParam(required = false, defaultValue = "720") Integer closeLimitTime) {
+                                   @RequestParam(required = false, defaultValue = "1440") Integer closeLimitTime) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
         String orderId = Uuid.uuid();
 
