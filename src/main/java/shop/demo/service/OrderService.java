@@ -25,6 +25,9 @@ public class OrderService {
     }
 
     public int putOrderStatus(String account, String orderId, Integer orderStatus) {
+        System.out.println(account);
+        System.out.println(orderId);
+        System.out.println(orderStatus);
         return orderMapper.putOrderStatus(account, orderId, orderStatus);
     }
 

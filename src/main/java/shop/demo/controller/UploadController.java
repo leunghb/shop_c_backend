@@ -23,12 +23,12 @@ public class UploadController {
     /**
      * 上传单张图片
      *
-     * @param type * int  0-用户
+     * @param type * int  0-用户 1-退货退款图片
      */
     @UserLoginToken
     @PostMapping("upload/uploadSinglePicture")
-    public Result<Object> putUserAvatar(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("type") int type) throws FileNotFoundException {
+    public Result<Object> uploadSinglePicture(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("fileType") int type) throws FileNotFoundException {
         if (file.isEmpty()) {
             return Result.error(CodeMsg.FAIL, "文件为空");
         }
@@ -41,11 +41,14 @@ public class UploadController {
         // 文件上传路径
         String filePath = "";
         String resultPath = "";
+        String uploadPath = userDir + "/src/main/resources/static/upload/";
+        String userFilePath = TokenUtil.getJwtToken(httpServletRequest).replace("@qq.com", "") + "/";
         switch (type) {
             case 0:
-                String userFilePath = TokenUtil.getJwtToken(httpServletRequest).replace("@qq.com", "");
-                filePath = userDir + "/src/main/resources/static/upload/" + userFilePath + "/";
+                filePath = uploadPath + "user/" + userFilePath;
                 break;
+            case 1:
+                filePath = uploadPath + "refunds/" + userFilePath;
         }
         resultPath = filePath.replace(userDir + "/src/main/resources", "") + fileName;
         File dest = new File(filePath + fileName);

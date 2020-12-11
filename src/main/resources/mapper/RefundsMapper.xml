@@ -3,6 +3,15 @@
 <mapper namespace="shop.demo.mapper.RefundsMapper">
     <insert id="addRefunds">
             insert into refunds(orderId, account, type, applyTime, cause, description, image) values(#{orderId},
-            #{account}, #{type}, #{applyTime}, #{cause}, #{description}, #{image});
+            #{account}, #{type}, CURRENT_TIMESTAMP(), #{cause}, #{description}, #{image});
     </insert>
+
+    <select id="getRefunds" resultType="shop.demo.entity.Refunds">
+        select id,orderId,account,type,applyTime,cause,description,image,confirmTime,agreeOrNot,sallerDescription
+        from refunds where orderId = #{orderId} and account =#{account} limit 1;
+    </select>
+
+    <delete id="delRefunds">
+        delete from refunds where orderId = #{orderId} and account =#{account} limit 1;
+    </delete>
 </mapper>
