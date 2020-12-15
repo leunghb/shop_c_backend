@@ -10,4 +10,8 @@ public interface EvaluateMapper {
     int addEvaluate(String account, String orderId, String goodsId, Integer goodsSpecsId, Integer rate, String comment);
 
     List<Evaluate> selEvaluate(String account, String orderId, Integer goodsSpecsId, String goodsId);
+
+    List<Evaluate> selGoodsEvaluateList(String goodsId);
+
+    int goodsEvaluateListCount(String goodsId);
 }

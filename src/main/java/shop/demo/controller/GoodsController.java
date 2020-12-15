@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.demo.entity.*;
+import shop.demo.service.EvaluateService;
 import shop.demo.service.GoodsService;
 import shop.demo.service.GoodsSpecsService;
 
@@ -23,6 +24,8 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private GoodsSpecsService goodsSpecsService;
+    @Autowired
+    private EvaluateService evaluateService;
 
     /**
      * 获取商品分类
@@ -75,6 +78,7 @@ public class GoodsController {
     public Result<Object> getGoodsDetail(@RequestParam String goodsId) {
         Goods goods = goodsService.getGoodsDetail(goodsId);
         List<GoodsSpecs> goodsSpecsList = goodsSpecsService.getGoodsSpecs(goodsId);
+        int evaluateCount = evaluateService.goodsEvaluateListCount(goodsId);
         if (goods == null) {
             return Result.error(CodeMsg.NOT_FIND_DATA);
         }
@@ -82,6 +86,7 @@ public class GoodsController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("goodsInfo", goods);
         map.put("goodsSpecs", goodsSpecsList);
+        map.put("evaluateCount", evaluateCount);
 
         return Result.success(map);
     }

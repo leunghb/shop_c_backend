@@ -18,4 +18,8 @@
          select id, account, orderId, goodsId, rate, comment, createdAt, updatedAt from evaluate where goodsId =
          #{goodsId} order by createdAt desc;
     </select>
+
+    <select id="goodsEvaluateListCount" resultType="Integer">
+        select count(*) from evaluate where goodsId = #{goodsId};
+    </select>
 </mapper>

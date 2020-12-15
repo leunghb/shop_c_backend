@@ -48,12 +48,12 @@ public class EvaluateController {
     /**
      * 获取订单商品的评论
      *
-     * @param orderId * string
+     * @param orderId      * string
      * @param goodsId
      * @param goodsSpecsId
      */
     @UserLoginToken
-    @PostMapping("order/selEvaluate")
+    @PostMapping("order/getEvaluate")
     public Result<Object> selEvaluate(@RequestParam String orderId,
                                       @RequestParam(required = false, defaultValue = "") String goodsId,
                                       @RequestParam Integer goodsSpecsId) {
@@ -65,4 +65,17 @@ public class EvaluateController {
         return Result.success(list);
     }
 
+    /**
+     * 获取商品的评论
+     *
+     * @param goodsId
+     */
+    @PostMapping("order/getGoodsEvaluateList")
+    public Result<Object> selGoodsEvaluateList(@RequestParam String goodsId) {
+        List<Evaluate> list = evaluateService.selGoodsEvaluateList(goodsId);
+        if (list.size() == 0) {
+            return Result.success(CodeMsg.NOT_FIND_DATA);
+        }
+        return Result.success(list);
+    }
 }

@@ -22,4 +22,12 @@ public class EvaluateService {
     public List<Evaluate> selEvaluate(String account, String orderId, Integer goodsSpecsId, String goodsId) {
         return evaluateMapper.selEvaluate(account, orderId, goodsSpecsId, goodsId);
     }
+
+    public List<Evaluate> selGoodsEvaluateList(String goodsId) {
+        return evaluateMapper.selGoodsEvaluateList(goodsId);
+    }
+
+    public int goodsEvaluateListCount(String goodsId) {
+        return evaluateMapper.goodsEvaluateListCount(goodsId);
+    }
 }
