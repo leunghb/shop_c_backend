@@ -6,9 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.Refunds;
 import shop.demo.mapper.RefundsMapper;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 @Transactional
 @Service
 public class RefundsService {
@@ -26,5 +23,8 @@ public class RefundsService {
 
     public int delRefunds(String account, String orderId) {
         return refundsMapper.delRefunds(account, orderId);
+    }
+    public int putRefundsStatus(String account, String orderId, Integer status) {
+        return refundsMapper.putRefundsStatus(account, orderId, status);
     }
 }

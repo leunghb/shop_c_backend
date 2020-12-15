@@ -15,4 +15,6 @@ public interface RefundsMapper {
     Refunds getRefunds(String account, String orderId);
 
     int delRefunds(String account, String orderId);
+
+    int putRefundsStatus(String account, String orderId, Integer status);
 }

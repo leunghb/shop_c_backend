@@ -14,6 +14,7 @@ public class Refunds extends Common {
     private String image;
     private Integer agreeOrNot;
     private String sallerDescription;
+    private Integer status;
 
     public String getOrderId() {
         return orderId;
@@ -87,6 +88,14 @@ public class Refunds extends Common {
         this.sallerDescription = sallerDescription;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,12 +110,13 @@ public class Refunds extends Common {
                 Objects.equals(description, refunds.description) &&
                 Objects.equals(image, refunds.image) &&
                 Objects.equals(agreeOrNot, refunds.agreeOrNot) &&
-                Objects.equals(sallerDescription, refunds.sallerDescription);
+                Objects.equals(sallerDescription, refunds.sallerDescription) &&
+                Objects.equals(status, refunds.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orderId, type, applyTime, confirmTime, cause, description, image, agreeOrNot, sallerDescription);
+        return Objects.hash(super.hashCode(), orderId, type, applyTime, confirmTime, cause, description, image, agreeOrNot, sallerDescription, status);
     }
 
     @Override
@@ -121,6 +131,7 @@ public class Refunds extends Common {
                 ", image='" + image + '\'' +
                 ", agreeOrNot=" + agreeOrNot +
                 ", sallerDescription='" + sallerDescription + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

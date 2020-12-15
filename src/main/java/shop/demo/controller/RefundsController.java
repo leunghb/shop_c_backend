@@ -90,8 +90,8 @@ public class RefundsController {
     public Result<Object> cancelRefunds(@RequestParam String orderId,
                                         @RequestParam Integer refundsType) {
         String account = TokenUtil.getJwtToken(httpServletRequest);
-        int rowA = refundsService.delRefunds(account, orderId);
-        int rowB = orderService.putOrderStatus(account, orderId, refundsType == 0 ? 1 : 2);
+        int rowA = refundsService.putRefundsStatus(account, orderId, 1);
+        int rowB = orderService.putOrderStatus(account, orderId, refundsType == 0 ? 2 : 8);
         if (rowA == 0 || rowB == 0) {
             return Result.error(CodeMsg.FAIL, "取消失败");
         }

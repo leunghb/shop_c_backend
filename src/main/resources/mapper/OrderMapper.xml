@@ -17,7 +17,7 @@
 
     <update id="putOrderStatus">
         update orders set orderStatus = #{orderStatus}
-        <if test="orderStatus == 1 and payTime == null">, payTime = CURRENT_TIMESTAMP()</if>
+        <if test="orderStatus == 1">, payTime = CURRENT_TIMESTAMP()</if>
         where
         account = #{account}
         and orderId = #{orderId}
@@ -38,7 +38,7 @@
         updatedAt from orders
         <where>
             <if test="orderStatus != null">
-                <if test="orderStatus == 0 || orderStatus == 1 || orderStatus == 2">
+                <if test="orderStatus == 0 || orderStatus == 1 || orderStatus == 2 || orderStatus == 8">
                     orderStatus = #{orderStatus}
                 </if>
                 <if test="orderStatus == 3">

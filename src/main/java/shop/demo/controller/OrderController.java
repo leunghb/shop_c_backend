@@ -162,7 +162,7 @@ public class OrderController {
     /**
      * 修改订单状态
      *
-     * @param type    * String (cancelOrder、closeOrder)
+     * @param type    * String (cancelOrder、closeOrder, receivingOrder)
      * @param orderId * String
      */
     @UserLoginToken
@@ -174,6 +174,8 @@ public class OrderController {
         if (type.equals("cancelOrder")) {
             orderStatus = 3;
         } else if (type.equals("closeOrder")) {
+            orderStatus = 8;
+        } else if(type.equals("receivingOrder")) {
             orderStatus = 2;
         }
         int row = orderService.putOrderStatus(account, orderId, orderStatus);

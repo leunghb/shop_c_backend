@@ -8,10 +8,15 @@
 
     <select id="getRefunds" resultType="shop.demo.entity.Refunds">
         select id,orderId,account,type,applyTime,cause,description,image,confirmTime,agreeOrNot,sallerDescription
-        from refunds where orderId = #{orderId} and account =#{account} limit 1;
+        from refunds where orderId = #{orderId} and account =#{account} and status = 0 order by createdAt desc limit 1;
     </select>
 
     <delete id="delRefunds">
         delete from refunds where orderId = #{orderId} and account =#{account} limit 1;
     </delete>
+
+    <update id="putRefundsStatus">
+        update refunds set status = #{status} where orderId = #{orderId} and account =#{account} order by createdAt
+        desc limit 1;
+    </update>
 </mapper>
