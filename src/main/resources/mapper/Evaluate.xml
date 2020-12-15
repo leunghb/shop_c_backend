@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop.demo.mapper.EvaluateMapper">
+    <insert id="addEvaluate">
+        insert into evaluate(account, orderId, goodsId, goodsSpecsId, rate, comment) values(#{account}, #{orderId},
+        #{goodsId}, #{goodsSpecsId},
+        #{rate}, #{comment});
+    </insert>
+
+    <select id="selEvaluate" resultType="shop.demo.entity.Evaluate">
+        select id, account, orderId, goodsId, rate, comment, createdAt, updatedAt from evaluate where account =
+        #{account} and orderId = #{orderId}
+        <if test="goodsId != ''">and goodsId = #{goodsId}</if>
+        <if test="goodsSpecsId != ''">and goodsSpecsId = #{goodsSpecsId}</if>;
+    </select>
+
+    <select id="selGoodsEvaluateList" resultType="shop.demo.entity.Evaluate">
+         select id, account, orderId, goodsId, rate, comment, createdAt, updatedAt from evaluate where goodsId =
+         #{goodsId} order by createdAt desc;
+    </select>
+</mapper>
