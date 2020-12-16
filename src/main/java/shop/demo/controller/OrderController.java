@@ -145,7 +145,7 @@ public class OrderController {
         JSONArray jsonArray = JSONArray.parseArray(order.getInfo());
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            int goodsSpecsId = (int) jsonObject.get("goodsSpecsId");
+            int goodsSpecsId = jsonObject.get("goodsSpecsId") == null ? -1 : (int) jsonObject.get("goodsSpecsId");
             int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
             String goodsId = (String) jsonObject.get("goodsId");
             userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
