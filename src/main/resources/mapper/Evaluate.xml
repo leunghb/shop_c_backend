@@ -14,9 +14,20 @@
         <if test="goodsSpecsId != ''">and goodsSpecsId = #{goodsSpecsId}</if>;
     </select>
 
-    <select id="selGoodsEvaluateList" resultType="shop.demo.entity.Evaluate">
-         select id, account, orderId, goodsId, rate, comment, createdAt, updatedAt from evaluate where goodsId =
-         #{goodsId} order by createdAt desc;
+    <select id="selGoodsEvaluateList" resultType="map">
+        select e.id, e.account, e.orderId, e.goodsId, e.rate, e.comment, e.createdAt, e.updatedAt, u.avatar, u.name
+        from evaluate e, user u
+        where goodsId = #{goodsId} and e.account = u.account
+        <if test="type == 0">
+            and rate &lt; 6
+        </if>
+        <if test="type == 1">
+            and rate &gt;= 6 and rate &lt; 10
+        </if>
+        <if test="type == 2">
+            and rate = 10
+        </if>
+        order by createdAt desc;
     </select>
 
     <select id="goodsEvaluateListCount" resultType="Integer">

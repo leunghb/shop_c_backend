@@ -23,8 +23,8 @@ public class EvaluateService {
         return evaluateMapper.selEvaluate(account, orderId, goodsSpecsId, goodsId);
     }
 
-    public List<Evaluate> selGoodsEvaluateList(String goodsId) {
-        return evaluateMapper.selGoodsEvaluateList(goodsId);
+    public List<Object> selGoodsEvaluateList(String goodsId, Integer type) {
+        return evaluateMapper.selGoodsEvaluateList(goodsId, type);
     }
 
     public int goodsEvaluateListCount(String goodsId) {

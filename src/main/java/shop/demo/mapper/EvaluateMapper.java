@@ -11,7 +11,7 @@ public interface EvaluateMapper {
 
     List<Evaluate> selEvaluate(String account, String orderId, Integer goodsSpecsId, String goodsId);
 
-    List<Evaluate> selGoodsEvaluateList(String goodsId);
+    List<Object> selGoodsEvaluateList(String goodsId, Integer type);
 
     int goodsEvaluateListCount(String goodsId);
 }

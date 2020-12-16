@@ -68,11 +68,13 @@ public class EvaluateController {
     /**
      * 获取商品的评论
      *
-     * @param goodsId
+     * @param goodsId * string
+     * @param type int (0-差评：0<=type<3；1-中评：3<=type<5；2-好评：type=5)
      */
-    @PostMapping("order/getGoodsEvaluateList")
-    public Result<Object> selGoodsEvaluateList(@RequestParam String goodsId) {
-        List<Evaluate> list = evaluateService.selGoodsEvaluateList(goodsId);
+    @PostMapping("goods/getGoodsEvaluateList")
+    public Result<Object> selGoodsEvaluateList(@RequestParam String goodsId,
+                                               @RequestParam(required = false, defaultValue = "") Integer type) {
+        List<Object> list = evaluateService.selGoodsEvaluateList(goodsId, type);
         if (list.size() == 0) {
             return Result.success(CodeMsg.NOT_FIND_DATA);
         }
