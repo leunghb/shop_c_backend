@@ -86,9 +86,8 @@ public class OrderController {
     /**
      * 订单列表
      *
-     * @param account     * string
      * @param orderStatus int null-全部 0-未支付 1-已支付 2-已完成 3-退货/退款中 4-已退货/退款
-     *                        (订单状态 0-未支付 1-已支付 2-交易完成 3-已取消 4-退款中 5-退货退款中 6-已退款 7-已退货退款)
+     *                    (订单状态 0-未支付 1-已支付 2-交易完成 3-已取消 4-退款中 5-退货退款中 6-已退款 7-已退货退款)
      * @param limit       int
      * @param page        int
      */
@@ -153,7 +152,8 @@ public class OrderController {
             userService.putUserBalance(account, totalPrice); //扣除用户余额
             orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
             goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
-            goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases);
+            goodsService.putGoodsSalesVolume(goodsId, numberOfpurchases); //修改销量
+            goodsSpecsService.putGoodsSpecsStock(goodsSpecsId, numberOfpurchases); //扣除商品规格库存
         }
 
         return Result.success();
@@ -175,7 +175,7 @@ public class OrderController {
             orderStatus = 3;
         } else if (type.equals("closeOrder")) {
             orderStatus = 8;
-        } else if(type.equals("receivingOrder")) {
+        } else if (type.equals("receivingOrder")) {
             orderStatus = 2;
         }
         int row = orderService.putOrderStatus(account, orderId, orderStatus);

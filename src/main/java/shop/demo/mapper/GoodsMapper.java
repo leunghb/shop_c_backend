@@ -19,4 +19,6 @@ public interface GoodsMapper {
     Goods getGoodsDetail(String goodsId);
 
     int putGoodsStock(String goodsId, int stock);
+
+    int putGoodsSalesVolume(String goodsId, int number);
 }

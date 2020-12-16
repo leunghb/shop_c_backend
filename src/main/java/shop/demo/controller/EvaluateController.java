@@ -69,7 +69,7 @@ public class EvaluateController {
      * 获取商品的评论
      *
      * @param goodsId * string
-     * @param type int (0-差评：0<=type<3；1-中评：3<=type<5；2-好评：type=5)
+     * @param type int (3-差评：0<=type<=4；2-中评：5<=type<=7；1-好评：8<=type<=10)
      */
     @PostMapping("goods/getGoodsEvaluateList")
     public Result<Object> selGoodsEvaluateList(@RequestParam String goodsId,

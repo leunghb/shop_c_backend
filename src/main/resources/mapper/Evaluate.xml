@@ -18,16 +18,16 @@
         select e.id, e.account, e.orderId, e.goodsId, e.rate, e.comment, e.createdAt, e.updatedAt, u.avatar, u.name
         from evaluate e, user u
         where goodsId = #{goodsId} and e.account = u.account
-        <if test="type == 0">
-            and rate &lt; 6
-        </if>
-        <if test="type == 1">
-            and rate &gt;= 6 and rate &lt; 10
+        <if test="type == 3">
+            and rate &lt;= 4
         </if>
         <if test="type == 2">
-            and rate = 10
+            and rate &gt;= 5 and rate &lt;= 7
         </if>
-        order by createdAt desc;
+        <if test="type == 1">
+            and rate &gt;= 8 and rate &gt;= 10
+        </if>
+        order by e.createdAt desc;
     </select>
 
     <select id="goodsEvaluateListCount" resultType="Integer">

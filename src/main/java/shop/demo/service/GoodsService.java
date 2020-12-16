@@ -35,4 +35,8 @@ public class GoodsService {
     public int putGoodsStock(String goodsId, int stock) {
         return goodsMapper.putGoodsStock(goodsId, stock);
     }
+
+    public int putGoodsSalesVolume(String goodsId, int number) {
+        return goodsMapper.putGoodsSalesVolume(goodsId, number);
+    }
 }

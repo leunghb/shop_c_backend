@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.Collect;
 import shop.demo.mapper.CollectMapper;
 
+import java.util.List;
+
 @Transactional
 @Service
 public class CollectService {
@@ -22,5 +24,9 @@ public class CollectService {
 
     public int delCollectGoods(String account, String goodsId) {
         return collectMapper.delCollectGoods(account, goodsId);
+    }
+
+    public List<Object> getUserGoodsCollectList(String account) {
+        return collectMapper.getUserGoodsCollectList(account);
     }
 }

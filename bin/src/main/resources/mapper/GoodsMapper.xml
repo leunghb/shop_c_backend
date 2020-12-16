@@ -29,7 +29,7 @@
 
     <select id="getGoodsDetail" resultType="shop.demo.entity.Goods">
         select
-        id,goodsId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList,collectNumber
+        id,goodsId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList
         from goods where goodsId = #{goodsId};
     </select>
 </mapper>

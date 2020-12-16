@@ -12,4 +12,11 @@
     <delete id="delCollectGoods">
         delete from collect where account = #{account} and goodsId = #{goodsId} limit 1;
     </delete>
+
+    <select id="getUserGoodsCollectList" resultType="map">
+        select c.goodsId, c.createdAt, g.goodsTypeId, g.originalPrice, g.discountPrice, g.cover, g.mainTitle,
+        g.subTitle
+        from collect c, goods g
+        where account = #{account} and c.goodsId = g.goodsId order by c.createdAt desc;
+    </select>
 </mapper>

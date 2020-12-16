@@ -1,6 +1,7 @@
 package shop.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import shop.demo.service.CollectService;
 import shop.demo.utils.TokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class CollectController {
@@ -64,5 +66,16 @@ public class CollectController {
             return Result.error(CodeMsg.NOT_FIND_DATA);
         }
         return Result.success(goods.getGoodsId());
+    }
+
+    /**
+     * 商品收藏列表
+     */
+    @UserLoginToken
+    @GetMapping("user/getUserGoodsCollectList")
+    public Result<Object> getUserGoodsCollectList() {
+        String account = TokenUtil.getJwtToken(httpServletRequest);
+        List<Object> list = collectService.getUserGoodsCollectList(account);
+        return Result.success(list);
     }
 }
