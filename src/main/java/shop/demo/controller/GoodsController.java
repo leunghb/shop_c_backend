@@ -55,7 +55,11 @@ public class GoodsController {
                                    @RequestParam(required = false, defaultValue = "1") int page) {
         page = (page - 1) * limit;
         List<Goods> list = goodsService.getGoodsList(soldOut, goodsTypeId, mainTitle, limit, page);
-        return Result.success(list);
+        int count = goodsService.getCountWhereSomething(soldOut, goodsTypeId, mainTitle, limit, page);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("list", list);
+        hashMap.put("count", count);
+        return Result.success(hashMap);
     }
 
     /**

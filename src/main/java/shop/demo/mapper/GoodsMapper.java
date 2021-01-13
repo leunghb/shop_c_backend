@@ -14,6 +14,8 @@ public interface GoodsMapper {
 
     List<Goods> getGoodsList(int soldOut, int goodsTypeId, String mainTitle, int limit, int page);
 
+    int getCountWhereSomething(int soldOut, int goodsTypeId, String mainTitle, int limit, int page);
+
     List<Goods> getHotGoods(int num);
 
     Goods getGoodsDetail(String goodsId);

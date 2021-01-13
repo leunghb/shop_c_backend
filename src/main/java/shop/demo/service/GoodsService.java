@@ -24,6 +24,10 @@ public class GoodsService {
         return goodsMapper.getGoodsList(soldOut, goodsTypeId, mainTitle, limit, page);
     }
 
+    public int getCountWhereSomething(int soldOut, int goodsTypeId, String mainTitle, int limit, int page) {
+        return goodsMapper.getCountWhereSomething(soldOut, goodsTypeId, mainTitle, limit, page);
+    }
+
     public List<Goods> getHotGoods(int num) {
         return goodsMapper.getHotGoods(num);
     }

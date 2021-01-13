@@ -5,8 +5,23 @@
         select id,title,priority,icon,createdAt,updatedAt from goods_type where soldOut = #{soldOut};
     </select>
 
+    <select id="getCountWhereSomething" resultType="Integer">
+        select count(*) from goods
+        <where>
+            <if test="soldOut >= 0">
+                soldOut = #{soldOut}
+            </if>
+            <if test="goodsTypeId > 0">
+                and goodsTypeId = #{goodsTypeId}
+            </if>
+            <if test="mainTitle != ''">
+                and mainTitle like '%' #{mainTitle} '%'
+            </if>
+        </where>
+    </select>
+
     <select id="getGoodsList" resultType="shop.demo.entity.Goods">
-        select id,goodsId,originalPrice,discountPrice,cover,mainTitle from goods
+        select id,goodsId,originalPrice,discountPrice,cover,mainTitle,goodsTypeId, createdAt, updatedAt from goods
         <where>
             <if test="soldOut >= 0">
                 soldOut = #{soldOut}
