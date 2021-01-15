@@ -23,7 +23,7 @@ public class UploadController {
     /**
      * 上传单张图片
      *
-     * @param type * int  0-用户 1-退货退款图片
+     * @param type * int  0-用户 1-退货退款图片 2-商品封面
      */
     @UserLoginToken
     @PostMapping("upload/uploadSinglePicture")
@@ -42,6 +42,7 @@ public class UploadController {
         String filePath = "";
         String resultPath = "";
         String uploadPath = userDir + "/src/main/resources/static/upload/";
+        //账号名为文件夹
         String userFilePath = TokenUtil.getJwtToken(httpServletRequest).replace("@qq.com", "") + "/";
         switch (type) {
             case 0:
@@ -49,6 +50,9 @@ public class UploadController {
                 break;
             case 1:
                 filePath = uploadPath + "refunds/" + userFilePath;
+                break;
+            case 2:
+                filePath = uploadPath + "goods/";
         }
         resultPath = filePath.replace(userDir + "/src/main/resources", "") + fileName;
         File dest = new File(filePath + fileName);
