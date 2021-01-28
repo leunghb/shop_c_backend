@@ -39,6 +39,25 @@ public class GoodsController {
     }
 
     /**
+     * 删除商品分类
+     *
+     * @param id
+     */
+    @PostMapping("goods/delGoodsType")
+    public Result<Object> delGoodsType(@RequestParam int id) {
+        System.out.println(id);
+        int count = goodsService.hasGoodsOfType(id);
+        if (count != 0) {
+            return Result.error(CodeMsg.FAIL, "该分类存在上架商品");
+        }
+        count = goodsService.delGoodsType(id);
+        if (count == 0) {
+            return Result.error(CodeMsg.FAIL, "删除失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "删除成功");
+    }
+
+    /**
      * 获取商品列表
      *
      * @param soldOut     int 状态 0-上架 1-已下架 -1-全部

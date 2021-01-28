@@ -5,6 +5,10 @@
         select id,title,priority,icon,createdAt,updatedAt from goods_type where soldOut = #{soldOut};
     </select>
 
+    <delete id="delGoodsType">
+        delete from goods_type where id = #{id}
+    </delete>
+
     <select id="getCountWhereSomething" resultType="Integer">
         select count(*) from goods
         <where>
@@ -36,6 +40,10 @@
         order by createdAt desc
         limit #{limit} offset #{page}
         ;
+    </select>
+
+    <select id="hasGoodsOfType" resultType="Integer">
+        select count(*) from goods where goodsTypeId = #{id} and soldOut = 0;
     </select>
 
     <select id="getHotGoods" resultType="shop.demo.entity.Goods">

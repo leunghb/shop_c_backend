@@ -20,6 +20,10 @@ public class GoodsService {
         return goodsMapper.getGoodsType(soldOut);
     }
 
+    public int delGoodsType(int id) {
+        return goodsMapper.delGoodsType(id);
+    }
+
     public List<Goods> getGoodsList(int soldOut, int goodsTypeId, String mainTitle, int limit, int page) {
         return goodsMapper.getGoodsList(soldOut, goodsTypeId, mainTitle, limit, page);
     }
@@ -42,5 +46,9 @@ public class GoodsService {
 
     public int putGoodsSalesVolume(String goodsId, int number) {
         return goodsMapper.putGoodsSalesVolume(goodsId, number);
+    }
+
+    public int hasGoodsOfType(int id) {
+        return goodsMapper.hasGoodsOfType(id);
     }
 }
