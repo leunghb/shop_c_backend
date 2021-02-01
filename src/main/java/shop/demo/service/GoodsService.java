@@ -51,4 +51,12 @@ public class GoodsService {
     public int hasGoodsOfType(int id) {
         return goodsMapper.hasGoodsOfType(id);
     }
+
+    public int addGoodsType(String title, int soldOut, int priority, String icon) {
+        return goodsMapper.addGoodsType(title, soldOut, priority, icon);
+    }
+
+    public int putGoodsType(int id, String title, int soldOut, int priority, String icon) {
+        return  goodsMapper.putGoodsType(id, title, soldOut, priority, icon);
+    }
 }

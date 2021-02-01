@@ -23,7 +23,7 @@ public class UploadController {
     /**
      * 上传单张图片
      *
-     * @param type * int  0-用户 1-退货退款图片 2-商品封面
+     * @param type * int  0-用户 1-退货退款图片 2-商品封面 3-商品分类图标
      */
     @UserLoginToken
     @PostMapping("upload/uploadSinglePicture")
@@ -53,6 +53,10 @@ public class UploadController {
                 break;
             case 2:
                 filePath = uploadPath + "goods/";
+                break;
+            case 3:
+                filePath = uploadPath + "goodsType/";
+                break;
         }
         resultPath = filePath.replace(userDir + "/src/main/resources", "") + fileName;
         File dest = new File(filePath + fileName);

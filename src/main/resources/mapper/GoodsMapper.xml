@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop.demo.mapper.GoodsMapper">
     <select id="getGoodsType" resultType="shop.demo.entity.GoodsType" parameterType="shop.demo.entity.GoodsType">
-        select id,title,priority,icon,createdAt,updatedAt from goods_type where soldOut = #{soldOut};
+        select id,title,priority,icon,soldOut,createdAt,updatedAt from goods_type where soldOut = #{soldOut};
     </select>
 
     <delete id="delGoodsType">
         delete from goods_type where id = #{id}
     </delete>
+
+    <insert id="addGoodsType">
+        insert into goods_type (title, soldOut, priority, icon) values (#{title}, #{soldOut}, #{priority}, #{icon});
+    </insert>
+
+    <update id="putGoodsType">
+        update goods_type set title = #{title}, soldOut = #{soldOut} , priority = #{priority}, icon = #{icon} where id = #{id} limit 1;
+    </update>
 
     <select id="getCountWhereSomething" resultType="Integer">
         select count(*) from goods

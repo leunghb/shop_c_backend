@@ -27,4 +27,8 @@ public interface GoodsMapper {
     int putGoodsSalesVolume(String goodsId, int number);
 
     int hasGoodsOfType(int id);
+
+    int addGoodsType(String title, int soldOut, int priority, String icon);
+
+    int putGoodsType(int id, String title, int soldOut, int priority, String icon);
 }

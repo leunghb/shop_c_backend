@@ -10,6 +10,7 @@ import shop.demo.service.EvaluateService;
 import shop.demo.service.GoodsService;
 import shop.demo.service.GoodsSpecsService;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,40 @@ public class GoodsController {
         map.put("evaluateCount", evaluateCount);
 
         return Result.success(map);
+    }
+
+    /**
+     * 添加商品分类
+     *
+     * @param title soldOut priority icon
+     */
+    @PostMapping("goods/addGoodsType")
+    public Result<Object> addGoodsType(@RequestParam String title,
+                                       @RequestParam int soldOut,
+                                       @RequestParam int priority,
+                                       @RequestParam String icon) {
+        int count = goodsService.addGoodsType(title, soldOut, priority, icon);
+        if (count == 0) {
+            return Result.error(CodeMsg.FAIL, "添加失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "添加成功");
+    }
+
+    /**
+     * 修改商品分类
+     *
+     * @param id title soldOut priority icon
+     */
+    @PostMapping("goods/putGoodsType")
+    public Result<Object> putGoodsType(@RequestParam int id,
+                                       @RequestParam String title,
+                                       @RequestParam int soldOut,
+                                       @RequestParam int priority,
+                                       @RequestParam String icon) {
+        int count = goodsService.putGoodsType(id, title, soldOut, priority, icon);
+        if (count == 0) {
+            return Result.error(CodeMsg.FAIL, "修改失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "修改成功");
     }
 }
