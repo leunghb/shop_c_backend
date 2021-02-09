@@ -66,4 +66,13 @@ public class GoodsSpecController {
         }
         return Result.success(CodeMsg.SUCCESS, "删除成功");
     }
+
+    @PostMapping("spec/delAttrKey")
+    public Result<Object> delAttrKey(@RequestParam int id) {
+        int count = goodsSpecsService.delAttrKey(id);
+        if (count == 0) {
+            return Result.error(CodeMsg.FAIL, "删除失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "删除成功");
+    }
 }
