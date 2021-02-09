@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import shop.demo.entity.AttrKey;
-import shop.demo.entity.AttrValue;
-import shop.demo.entity.CodeMsg;
-import shop.demo.entity.Result;
+import shop.demo.entity.*;
 import shop.demo.service.GoodsSpecsService;
 
 import java.lang.reflect.Array;
@@ -50,11 +47,15 @@ public class GoodsSpecController {
     @PostMapping("spec/addAttrValue")
     public Result<Object> addAttrValue(@RequestParam int attrKeyId,
                                        @RequestParam String name) {
-        int count = goodsSpecsService.addAttrValue(attrKeyId, name);
-        if (count == 0) {
+        AttrValue attrValue = new AttrValue();
+        attrValue.setAttrKeyId(attrKeyId);
+        attrValue.setName(name);
+        goodsSpecsService.addAttrValue(attrValue);
+        Long id = attrValue.getId();
+        if (!(id > 0)) {
             return Result.error(CodeMsg.FAIL, "添加失败");
         }
-        return Result.success(CodeMsg.SUCCESS, "添加成功");
+        return Result.success(id);
     }
 
     @PostMapping("spec/delAttrValue")
