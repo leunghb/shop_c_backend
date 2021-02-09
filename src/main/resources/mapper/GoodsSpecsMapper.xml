@@ -8,4 +8,29 @@
     <update id="putGoodsSpecsStock">
         update goods_specs set stock = stock - #{stock} where id = #{id} limit 1;
     </update>
+
+    <select id="getAttrKey" resultType="map">
+        select k.id, k.goodsTypeId, k.name, k.createdAt, k.updatedAt, t.title from attr_key k, goods_type t
+        where t.id = k.goodsTypeId
+        <if test="goodsTypeId > 0">
+            and k.goodsTypeId = #{goodsTypeId}
+        </if>
+        order by k.createdAt desc;
+    </select>
+
+    <select id="getAttrValue" resultType="shop.demo.entity.AttrValue">
+        select id, attrKeyId, name from attr_value where attrKeyId = #{id} order by createdAt desc;
+    </select>
+
+    <insert id="addAttrKey">
+        insert into attr_key (goodsTypeId, name) values (#{goodsTypeId}, #{name});
+    </insert>
+
+    <insert id="addAttrValue">
+        insert into attr_value (attrKeyId, name) values (#{attrKeyId}, #{name});
+    </insert>
+
+    <delete id="delAttrValue">
+        delete from attr_value where id = #{id};
+    </delete>
 </mapper>
