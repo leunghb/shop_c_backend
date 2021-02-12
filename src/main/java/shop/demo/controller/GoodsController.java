@@ -1,5 +1,8 @@
 package shop.demo.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +13,11 @@ import shop.demo.service.EvaluateService;
 import shop.demo.service.GoodsService;
 import shop.demo.service.GoodsSpecsService;
 
-import java.awt.*;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import shop.demo.utils.TokenUtil;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class GoodsController {
@@ -148,5 +148,39 @@ public class GoodsController {
             return Result.error(CodeMsg.FAIL, "修改失败");
         }
         return Result.success(CodeMsg.SUCCESS, "修改成功");
+    }
+
+    @PostMapping("goods/addGoods")
+    public Result<Object> addGoods(@RequestParam String goodsId,
+                                   @RequestParam int goodsTypeId,
+                                   @RequestParam BigDecimal originalPrice,
+                                   @RequestParam BigDecimal discountPrice,
+                                   @RequestParam(required = false) String cover,
+                                   @RequestParam String mainTitle,
+                                   @RequestParam(required = false) String subTitle,
+                                   @RequestParam int soldOut,
+                                   @RequestParam int stock,
+                                   @RequestParam(required = false) String content,
+                                   @RequestParam(required = false) String specList,
+                                   @RequestParam(required = false) String attr) {
+        //新增、修改goods表
+        int row = goodsService.addGoods(goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, soldOut, stock, content, specList);
+        if (row == 0) {
+            return Result.error(CodeMsg.FAIL);
+        }
+        //删除goods_specs表旧数据
+        goodsSpecsService.delGoodsSpecs(goodsId);
+        //新增goods_specs
+        JSONArray jsonArray = JSONArray.parseArray(attr);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            System.out.println(jsonObject.get("price"));
+            String specs = (String) jsonObject.get("id");
+            int specStock = (int) jsonObject.get("stock");
+            Integer price = (Integer) jsonObject.get("price");
+            BigDecimal _price = new BigDecimal(price);
+            goodsSpecsService.addGoodsSpecs(goodsId, specs, specStock, _price);
+        }
+        return Result.success();
     }
 }
