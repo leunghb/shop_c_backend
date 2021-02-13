@@ -183,4 +183,13 @@ public class GoodsController {
         }
         return Result.success();
     }
+
+    @PostMapping("goods/delGoods")
+    public Result<Object> delGoods(@RequestParam String goodsId) {
+        int row = goodsService.delGoods(goodsId);
+        if (row == 0) {
+            return Result.error(CodeMsg.FAIL, "删除失败");
+        }
+        return Result.success(CodeMsg.SUCCESS, "删除成功");
+    }
 }
