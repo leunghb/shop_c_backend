@@ -60,7 +60,7 @@
 
     <select id="getGoodsDetail" resultType="shop.demo.entity.Goods">
         select
-        id,goodsId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList
+        id,goodsId,goodsTypeId,originalPrice,discountPrice,cover,mainTitle,subTitle,salesVolume,soldOut,stock,content,specList
         from goods where goodsId = #{goodsId};
     </select>
 
@@ -71,4 +71,21 @@
     <update id="putGoodsSalesVolume">
         update goods set salesVolume = salesVolume + #{number} where goodsId = #{goodsId} limit 1;
     </update>
+
+    <insert id="addGoods">
+        insert into goods
+        (goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, soldOut, stock, content, specList)
+        values (#{goodsId}, #{goodsTypeId}, #{originalPrice}, #{discountPrice}, #{cover}, #{mainTitle}, #{subTitle}, #{soldOut}, #{stock}, #{content}, #{specList})
+        on duplicate key update
+        goodsTypeId = #{goodsTypeId},
+        originalPrice = #{originalPrice},
+        discountPrice = #{discountPrice},
+        cover = #{cover},
+        mainTitle = #{mainTitle},
+        subTitle = #{subTitle},
+        soldOut = #{soldOut},
+        stock = #{stock},
+        content = #{content},
+        specList = #{specList};
+    </insert>
 </mapper>
