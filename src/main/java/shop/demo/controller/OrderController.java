@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class OrderController {
@@ -93,15 +94,19 @@ public class OrderController {
      */
     @UserLoginToken
     @PostMapping("order/getOrderList")
-    public Result<Object> getOrderList(@RequestParam(required = false, defaultValue = "") Integer orderStatus,
-                                       @RequestParam(required = false, defaultValue = "") Integer limit,
-                                       @RequestParam(required = false, defaultValue = "") Integer page) {
+    public Result<Object> getOrderList(@RequestParam(required = false, defaultValue = "-1") Integer orderStatus,
+                                       @RequestParam(required = false, defaultValue = "10") Integer limit,
+                                       @RequestParam(required = false, defaultValue = "1") Integer page) {
         if (page != null) {
             page = (page - 1) * limit;
         }
         String account = TokenUtil.getJwtToken(httpServletRequest);
         List<Order> list = orderService.getOrderList(account, orderStatus, limit, page);
-        return Result.success(list);
+        int count = orderService.getOrderCount(orderStatus);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("count", count);
+        hashMap.put("list", list);
+        return Result.success(hashMap);
     }
 
     /**
@@ -149,7 +154,7 @@ public class OrderController {
             int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
             String goodsId = (String) jsonObject.get("goodsId");
             userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
-            userService.putUserBalance(account, totalPrice); //扣除用户余额
+            userService.putUserBalance(account, totalPrice, 0); //扣除用户余额
             orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
             goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
             goodsService.putGoodsSalesVolume(goodsId, numberOfpurchases); //修改销量
@@ -167,16 +172,29 @@ public class OrderController {
      */
     @UserLoginToken
     @PostMapping({"order/putOrderStatus/{type}"})
-    public Result<Object> putOrderStatus(@PathVariable String type, @RequestParam String orderId) {
-        String account = TokenUtil.getJwtToken(httpServletRequest);
+    public Result<Object> putOrderStatus(@PathVariable String type,
+                                         @RequestParam String orderId,
+                                         @RequestParam(required = false, defaultValue = "-1") String account,
+                                         @RequestParam(required = false, defaultValue = "") BigDecimal useAmount) {
+        if (account.equals("-1")) {
+            account = TokenUtil.getJwtToken(httpServletRequest);
+        }
 
-        Integer orderStatus = 0;
+        int orderStatus = 0;
         if (type.equals("cancelOrder")) {
             orderStatus = 3;
         } else if (type.equals("closeOrder")) {
             orderStatus = 8;
         } else if (type.equals("receivingOrder")) {
             orderStatus = 2;
+        } else if (type.equals("completeRefund")) {
+            orderStatus = 6;
+            userBalanceRecordService.addUserBalanceRecord(account, 2, useAmount, orderId);
+            userService.putUserBalance(account, useAmount, 1);
+        } else if (type.equals("completeReturnRefund")) {
+            orderStatus = 7;
+            userBalanceRecordService.addUserBalanceRecord(account, 2, useAmount, orderId);
+            userService.putUserBalance(account, useAmount, 1);
         }
         int row = orderService.putOrderStatus(account, orderId, orderStatus);
         if (row == 0) {
