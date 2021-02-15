@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getOrder" resultType="shop.demo.entity.Order">
-        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
+        select id, orderId, account, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
         createdAt,
         updatedAt from
         orders
@@ -33,7 +33,8 @@
     </update>
 
     <select id="getOrderList" resultType="shop.demo.entity.Order">
-        select id, orderId, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime, payTime,
+        select id, orderId, account, addressId, orderStatus, totalPrice, info, paymentLimitTime, closeLimitTime,
+        payTime,
         createdAt,
         updatedAt from orders
         <where>
@@ -48,12 +49,22 @@
                     orderStatus &gt;= 6 and orderStatus &lt;= 7
                 </if>
             </if>
-            and account = #{account}
+            <if test="account != 123456">
+                and account = #{account}
+            </if>
         </where>
         order by updatedAt desc
         <if test="limit != null and page != null">
             limit #{limit} offset #{page}
         </if>
+        ;
+    </select>
+
+    <select id="getOrderCount" resultType="Integer">
+        select count(*) from orders
+        <where>
+            <if test="orderStatus != -1">orderStatus = #{orderStatus}</if>
+        </where>
         ;
     </select>
 </mapper>
