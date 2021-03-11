@@ -32,7 +32,14 @@
     </select>
 
     <update id="putUserBalance">
-        update user set balance = balance - #{balance} where account = #{account} limit 1;
+        update user set
+        <if test="type = 0">
+            balance = balance - #{balance}
+        </if>
+        <if test="type = 1">
+            balance = balance + #{balance}
+        </if>
+        where account = #{account} limit 1;
     </update>
 
     <update id="putUserAvatarOrName">

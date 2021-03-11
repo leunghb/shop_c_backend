@@ -27,10 +27,33 @@
     </insert>
 
     <insert id="addAttrValue">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
         insert into attr_value (attrKeyId, name) values (#{attrKeyId}, #{name});
     </insert>
 
     <delete id="delAttrValue">
         delete from attr_value where id = #{id};
     </delete>
+
+    <delete id="delAttrKey">
+        delete from attr_key where id = #{id};
+    </delete>
+
+    <select id="getAttrKeyByGoodsType" resultType="shop.demo.entity.AttrKey">
+        select id, goodsTypeId, name from attr_key where goodsTypeId = #{goodsTypeId};
+    </select>
+
+    <select id="getAttrValueByKeyId" resultType="shop.demo.entity.AttrValue">
+        select id, attrKeyId, name from attr_value where #{attrKeyId} = #{attrKeyId};
+    </select>
+
+    <delete id="delGoodsSpecs">
+        delete from goods_specs where goodsId = #{goodsId};
+    </delete>
+
+    <insert id="addGoodsSpecs">
+        insert into goods_specs (goodsId, specs, stock, price) values (#{goodsId}, #{specs}, #{stock}, #{price});
+    </insert>
 </mapper>

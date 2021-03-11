@@ -38,4 +38,8 @@ public class OrderService {
     public List<Order> getOrderList(String account, Integer orderStatus, Integer limit, Integer page) {
         return orderMapper.getOrderList(account, orderStatus, limit, page);
     }
+
+    public int getOrderCount(int orderStatus) {
+        return orderMapper.getOrderCount(orderStatus);
+    }
 }

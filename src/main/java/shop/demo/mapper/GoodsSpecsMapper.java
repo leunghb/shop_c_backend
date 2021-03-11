@@ -5,6 +5,7 @@ import shop.demo.entity.AttrKey;
 import shop.demo.entity.AttrValue;
 import shop.demo.entity.GoodsSpecs;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,17 @@ public interface GoodsSpecsMapper {
 
     int addAttrKey(int goodsTypeId, String name);
 
-    int addAttrValue(int attrKeyId, String name);
+    void addAttrValue(AttrValue attrValue);
 
     int delAttrValue(int id);
+
+    int delAttrKey(int id);
+
+    List<AttrKey> getAttrKeyByGoodsType(int goodsTypeId);
+
+    List<AttrValue> getAttrValueByKeyId(int attrKeyId);
+
+    void delGoodsSpecs(String goodsId);
+
+    void addGoodsSpecs(String goodsId, String specs, int stock, BigDecimal price);
 }

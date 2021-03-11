@@ -88,4 +88,8 @@
         content = #{content},
         specList = #{specList};
     </insert>
+
+    <delete id="delGoods">
+        delete from goods where goodsId = #{goodsId};
+    </delete>
 </mapper>

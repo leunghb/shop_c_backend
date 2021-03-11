@@ -44,8 +44,8 @@ public class UserService {
         return userMapper.getUserBalance(account);
     }
 
-    public int putUserBalance(String account, BigDecimal balance) {
-        return userMapper.putUserBalance(account, balance);
+    public int putUserBalance(String account, BigDecimal balance, int type) {
+        return userMapper.putUserBalance(account, balance, type);
     }
 
     public int putUserAvatarOrName(String account, String avatar, String name) {

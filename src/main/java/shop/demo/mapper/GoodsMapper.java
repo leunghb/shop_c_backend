@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.demo.entity.Goods;
 import shop.demo.entity.GoodsType;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -31,4 +32,8 @@ public interface GoodsMapper {
     int addGoodsType(String title, int soldOut, int priority, String icon);
 
     int putGoodsType(int id, String title, int soldOut, int priority, String icon);
+
+    int addGoods(String goodsId, int goodsTypeId, BigDecimal originalPrice, BigDecimal discountPrice, String cover, String mainTitle, String subTitle, int soldOut, int stock, String content, String specList);
+
+    int delGoods(String goodsId);
 }

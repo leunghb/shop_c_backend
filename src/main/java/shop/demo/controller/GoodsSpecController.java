@@ -1,15 +1,12 @@
 package shop.demo.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.demo.entity.*;
 import shop.demo.service.GoodsSpecsService;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 @RestController
@@ -74,5 +71,24 @@ public class GoodsSpecController {
             return Result.error(CodeMsg.FAIL, "删除失败");
         }
         return Result.success(CodeMsg.SUCCESS, "删除成功");
+    }
+
+    @PostMapping("spec/getAttrKeyByGoodsType")
+    public Result<Object> getAttrKeyByGoodsType(@RequestParam int goodsTypeId) {
+        List<AttrKey> list = goodsSpecsService.getAttrKeyByGoodsType(goodsTypeId);
+        if (list.size() == 0) {
+            return Result.error(CodeMsg.NOT_FIND_DATA);
+        }
+        return Result.success(list);
+    }
+
+    @PostMapping("spec/getAttrValueByKeyId")
+    public Result<Object> getAttrValueByKeyId(@RequestParam int attrKeyId) {
+        System.out.println(attrKeyId);
+        List<AttrValue> list = goodsSpecsService.getAttrValueByKeyId(attrKeyId);
+        if (list.size() == 0) {
+            return Result.error(CodeMsg.NOT_FIND_DATA);
+        }
+        return Result.success(list);
     }
 }

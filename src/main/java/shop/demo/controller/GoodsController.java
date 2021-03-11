@@ -174,7 +174,6 @@ public class GoodsController {
         JSONArray jsonArray = JSONArray.parseArray(attr);
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonObject.get("price"));
             String specs = (String) jsonObject.get("id");
             int specStock = (int) jsonObject.get("stock");
             Integer price = (Integer) jsonObject.get("price");

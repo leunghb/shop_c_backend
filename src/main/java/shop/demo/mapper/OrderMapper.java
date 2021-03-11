@@ -17,4 +17,6 @@ public interface OrderMapper {
     int putOrderAddress(String account, String orderId, Integer addressId);
 
     List<Order> getOrderList(String account, Integer orderStatus, Integer limit, Integer page);
+
+    int getOrderCount(int orderStatus);
 }

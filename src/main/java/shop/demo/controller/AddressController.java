@@ -80,7 +80,7 @@ public class AddressController {
     /**
      * 删除地址
      *
-     * @param id      * int 地址id
+     * @param id * int 地址id
      */
     @UserLoginToken
     @PostMapping("user/delAddress")
@@ -108,6 +108,13 @@ public class AddressController {
         if (id == null) {
             return Result.error(CodeMsg.PARAMETER_ISNULL);
         }
+        Address address = addressService.getAddress(account, id);
+        return Result.success(address);
+    }
+
+    @PostMapping("b/user/getAddressById")
+    public Result<Object> getAddressById(@RequestParam Integer id,
+                                         @RequestParam String account) {
         Address address = addressService.getAddress(account, id);
         return Result.success(address);
     }

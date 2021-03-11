@@ -8,6 +8,7 @@ import shop.demo.entity.Goods;
 import shop.demo.entity.GoodsType;
 import shop.demo.mapper.GoodsMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Transactional
@@ -57,6 +58,14 @@ public class GoodsService {
     }
 
     public int putGoodsType(int id, String title, int soldOut, int priority, String icon) {
-        return  goodsMapper.putGoodsType(id, title, soldOut, priority, icon);
+        return goodsMapper.putGoodsType(id, title, soldOut, priority, icon);
+    }
+
+    public int addGoods(String goodsId, int goodsTypeId, BigDecimal originalPrice, BigDecimal discountPrice, String cover, String mainTitle, String subTitle, int soldOut, int stock, String content, String specList) {
+        return goodsMapper.addGoods(goodsId, goodsTypeId, originalPrice, discountPrice, cover, mainTitle, subTitle, soldOut, stock, content, specList);
+    }
+
+    public int delGoods(String goodsId) {
+        return goodsMapper.delGoods(goodsId);
     }
 }

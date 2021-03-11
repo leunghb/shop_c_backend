@@ -24,7 +24,7 @@ public interface UserMapper {
 
     BigDecimal getUserBalance(String account);
 
-    int putUserBalance(String account, BigDecimal balance);
+    int putUserBalance(String account, BigDecimal balance, int type);
 
     int putUserAvatarOrName(String account, String avatar, String name);
 }
