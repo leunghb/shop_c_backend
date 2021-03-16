@@ -33,10 +33,10 @@
 
     <update id="putUserBalance">
         update user set
-        <if test="type = 0">
+        <if test="type == -1">
             balance = balance - #{balance}
         </if>
-        <if test="type = 1">
+        <if test="type == 1">
             balance = balance + #{balance}
         </if>
         where account = #{account} limit 1;
