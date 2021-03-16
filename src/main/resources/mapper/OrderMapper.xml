@@ -49,7 +49,7 @@
                     orderStatus &gt;= 6 and orderStatus &lt;= 7
                 </if>
             </if>
-            <if test="account != 123456">
+            <if test="account != '123456'.toString()">
                 and account = #{account}
             </if>
         </where>

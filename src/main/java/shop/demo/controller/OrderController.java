@@ -100,7 +100,6 @@ public class OrderController {
         if (page != null) {
             page = (page - 1) * limit;
         }
-        System.out.println(orderStatus);
         String account = TokenUtil.getJwtToken(httpServletRequest);
         List<Order> list = orderService.getOrderList(account, orderStatus, limit, page);
         int count = orderService.getOrderCount(orderStatus);
