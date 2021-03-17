@@ -154,7 +154,7 @@ public class OrderController {
             int numberOfpurchases = (int) jsonObject.get("numberOfpurchases");
             String goodsId = (String) jsonObject.get("goodsId");
             userBalanceRecordService.addUserBalanceRecord(account, 1, totalPrice, orderId); //生成消费记录
-            userService.putUserBalance(account, totalPrice, 0); //扣除用户余额
+            userService.putUserBalance(account, totalPrice, -1); //扣除用户余额
             orderService.putOrderStatus(account, orderId, 1); //订单改为已支付
             goodsService.putGoodsStock(goodsId, numberOfpurchases); //扣除商品总库存
             goodsService.putGoodsSalesVolume(goodsId, numberOfpurchases); //修改销量
@@ -190,11 +190,11 @@ public class OrderController {
         } else if (type.equals("completeRefund")) {
             orderStatus = 6;
             userBalanceRecordService.addUserBalanceRecord(account, 2, useAmount, orderId);
-            userService.putUserBalance(account, useAmount, 1);
+            userService.putUserBalance(account, useAmount, 1); //返还金额
         } else if (type.equals("completeReturnRefund")) {
             orderStatus = 7;
             userBalanceRecordService.addUserBalanceRecord(account, 2, useAmount, orderId);
-            userService.putUserBalance(account, useAmount, 1);
+            userService.putUserBalance(account, useAmount, 1); //返还金额
         }
         int row = orderService.putOrderStatus(account, orderId, orderStatus);
         if (row == 0) {
